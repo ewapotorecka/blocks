@@ -14,7 +14,7 @@ function main() {
 		],
 		exit: { x: 0, y: -1 },
 		playerPosition: { x: 9, y: 9 }
-	}
+	};
 
 	document.addEventListener( 'keyup', event => {
 		if ( event.key === 'ArrowUp' ) {

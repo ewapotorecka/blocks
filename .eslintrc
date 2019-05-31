@@ -1,0 +1,9 @@
+{
+	"extends": [ "ckeditor5" ],
+	"parserOptions": {
+		"ecmaVersion": 2018
+	},
+	"env": {
+		"browser": true
+	}
+}

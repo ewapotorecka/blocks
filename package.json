@@ -1,0 +1,6 @@
+{
+	"dependencies": {
+		"eslint": "^5.16.0",
+		"eslint-config-ckeditor5": "^1.0.14"
+	}
+}
