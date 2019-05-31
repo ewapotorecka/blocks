@@ -1,18 +1,20 @@
 function main() {
-	const board = {
-		position: { x: 0, y: 0 },
-		height: 10,
-		width: 10
-	};
-	const blocks = [
-		{
-			position: { x: 3, y: 4 },
-			height: 3,
-			width: 1
-		}
-	];
-	const exit = { x: 0, y: -1 };
-	let playerPosition = { x: 9, y: 9 };
+	const scene = {
+		board: {
+			position: { x: 0, y: 0 },
+			height: 10,
+			width: 10
+		},
+		blocks: [
+			{
+				position: { x: 3, y: 4 },
+				height: 3,
+				width: 1
+			}
+		],
+		exit: { x: 0, y: -1 },
+		playerPosition: { x: 9, y: 9 }
+	}
 
 	document.addEventListener( 'keyup', event => {
 		if ( event.key === 'ArrowUp' ) {
@@ -34,29 +36,25 @@ function renderBoard() {
 	drawExit();
 }
 
-function movePlayer( moveVector, playerPosition ) {
+function movePlayer( scene, moveVector ) {
 	const newPosition = {
-		x: playerPosition.x + moveVector.x,
-		y: playerPosition.y + moveVector.y
+		x: scene.playerPosition.x + moveVector.x,
+		y: scene.playerPosition.y + moveVector.y
 	};
 
-	if ( isExitAt( newPosition ) ) {
+	if ( isExitAt( scene, newPosition ) ) {
 		return 'Jupijajej';
 	}
 
 	if ( isEmptyAt( newPosition ) ) {
-		updatePlayerPosition( playerPosition, moveVector );
+		scene.playerPosition = newPosition;
 	} else if ( canBlockBeMoved() ) {
-		updatePlayerPosition( playerPosition, moveVector );
+		scene.playerPosition = newPosition;
 		updateBlockPosition();
 	}
 }
 
-function isExitAt( position, exit ) {
-	return position.x == exit.x && position.y == exit.y;
+function isExitAt( scene, position ) {
+	return position.x == scene.exit.x && position.y == scene.exit.y;
 }
 
-function updatePlayerPosition( playerPosition, moveVector ) {
-	playerPosition.x += moveVector.x;
-	playerPosition.y += moveVector.y;
-}
