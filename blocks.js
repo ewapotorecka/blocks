@@ -24,6 +24,11 @@ function main() {
 				position: { x: 6, y: 6 },
 				height: 2,
 				width: 2
+			},
+			{
+				position: { x: 4, y: 2 },
+				height: 1,
+				width: 3
 			}
 		],
 		exit: { x: 0, y: 0 },
@@ -68,13 +73,19 @@ function drawBoard( scene, ctx ) {
 }
 
 function drawBlocks( scene, ctx ) {
+	const colorAdd = 255 / scene.blocks.length;
+	let colorNum = 0;
 	for ( const block of scene.blocks ) {
+		const color = `rgb( ${ colorNum }, ${ colorNum }, ${ colorNum } )`;
+		ctx.fillStyle = color;
 		ctx.fillRect( block.position.x * tileSize, block.position.y * tileSize, block.width * tileSize, block.height * tileSize );
+		colorNum = colorNum + colorAdd;
 	}
 }
 
 function drawPlayer( scene, ctx ) {
 	const player = scene.playerPosition;
+	ctx.fillStyle = 'pink';
 	ctx.beginPath();
 	ctx.arc( player.x * tileSize + tileSize / 2, player.y * tileSize + tileSize / 2, tileSize / 2, 0, 2 * Math.PI );
 	ctx.fill();
