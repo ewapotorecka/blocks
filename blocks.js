@@ -1,5 +1,62 @@
 const tileSize = 50;
 
+class CustomBlock {
+	constructor( positions ) {
+		this.positions = positions;
+	}
+
+	draw( ctx, color ) {
+		for ( const position of this.positions ) {
+			ctx.fillStyle = color;
+			ctx.fillRect( position.x * tileSize, position.y * tileSize, tileSize, tileSize );
+		}
+	}
+
+	get partialPosition() {
+		return this.positions;
+	}
+
+	updatePositon( moveVector ) {
+		for ( const position of this.positions ) {
+			position.x += moveVector.x;
+			position.y += moveVector.y;
+		}
+	}
+}
+
+class RectangleBlock {
+	constructor( position, width, height ) {
+		this.position = position;
+		this.width = width;
+		this.height = height;
+	}
+
+	draw( ctx ) {
+		ctx.fillStyle = 'black';
+		ctx.fillRect( this.position.x * tileSize, this.position.y * tileSize, this.width * tileSize, this.height * tileSize );
+	}
+
+	get partialPosition() {
+		const blockPartialPositions = [];
+
+		for ( let i = 0; i < this.height; i++ ) {
+			for ( let j = 0; j < this.width; j++ ) {
+				blockPartialPositions.push( {
+					x: this.position.x + j,
+					y: this.position.y + i
+				} );
+			}
+		}
+
+		return blockPartialPositions;
+	}
+
+	updatePositon( moveVector ) {
+		this.position.x += moveVector.x;
+		this.position.y += moveVector.y;
+	}
+}
+
 main();
 
 function main() {
@@ -10,26 +67,11 @@ function main() {
 			width: 10
 		},
 		blocks: [
-			{
-				position: { x: 3, y: 4 },
-				height: 3,
-				width: 1
-			},
-			{
-				position: { x: 1, y: 2 },
-				height: 3,
-				width: 1
-			},
-			{
-				position: { x: 6, y: 6 },
-				height: 2,
-				width: 2
-			},
-			{
-				position: { x: 4, y: 2 },
-				height: 1,
-				width: 3
-			}
+			new RectangleBlock( { x: 3, y: 4 }, 3, 1 ),
+			new CustomBlock( [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ] ),
+			new CustomBlock( [ { x: 5, y: 1 }, { x: 5, y: 2 }, { x: 5, y: 3 }, { x: 4, y: 3 } ] ),
+			new CustomBlock( [ { x: 8, y: 5 }, { x: 8, y: 6 }, { x: 8, y: 7 }, { x: 7, y: 7 }, { x: 7, y: 5 } ] ),
+			new CustomBlock( [ { x: 1, y: 9 }, { x: 3, y: 9 } ] )
 		],
 		exit: { x: 0, y: 0 },
 		playerPosition: { x: 9, y: 9 }
@@ -77,8 +119,8 @@ function drawBlocks( scene, ctx ) {
 	let colorNum = 0;
 	for ( const block of scene.blocks ) {
 		const color = `rgb( ${ colorNum }, ${ colorNum }, ${ colorNum } )`;
-		ctx.fillStyle = color;
-		ctx.fillRect( block.position.x * tileSize, block.position.y * tileSize, block.width * tileSize, block.height * tileSize );
+
+		block.draw( ctx, color );
 		colorNum = colorNum + colorAdd;
 	}
 }
@@ -121,7 +163,7 @@ function movePlayer( scene, moveVector ) {
 
 		if ( canBlockBeMoved( scene, block, moveVector ) ) {
 			scene.playerPosition = newPosition;
-			updateBlockPosition( block, moveVector );
+			block.updatePositon( moveVector );
 		}
 	}
 }
@@ -132,7 +174,7 @@ function isExitAt( scene, position ) {
 
 function isEmptyAt( scene, position ) {
 	for ( const block of scene.blocks ) {
-		const blockPartialPositions = getBlockPartialPositions( block );
+		const blockPartialPositions = block.partialPosition;
 		for ( const partialPosition of blockPartialPositions ) {
 			if ( position.x == partialPosition.x && position.y == partialPosition.y ) {
 				return false;
@@ -147,7 +189,7 @@ function canBlockBeMoved( scene, block, moveVector ) {
 		...scene,
 		blocks: scene.blocks.filter( blockInArr => block !== blockInArr )
 	};
-	const blockPartialPositions = getBlockPartialPositions( block );
+	const blockPartialPositions = block.partialPosition;
 
 	for ( const partialPosition of blockPartialPositions ) {
 		const newPosition = {
@@ -169,17 +211,12 @@ function canBlockBeMoved( scene, block, moveVector ) {
 
 function findBlock( scene, position ) {
 	for ( const block of scene.blocks ) {
-		for ( const partialPosition of getBlockPartialPositions( block ) ) {
+		for ( const partialPosition of block.partialPosition ) {
 			if ( position.x == partialPosition.x && position.y == partialPosition.y ) {
 				return block;
 			}
 		}
 	}
-}
-
-function updateBlockPosition( block, moveVector ) {
-	block.position.x += moveVector.x;
-	block.position.y += moveVector.y;
 }
 
 function isPositionOnBoard( scene, position ) {
@@ -189,19 +226,4 @@ function isPositionOnBoard( scene, position ) {
 		position.x >= 0 &&
 		position.y >= 0
 	);
-}
-
-function getBlockPartialPositions( block ) {
-	const blockPartialPositions = [];
-
-	for ( let i = 0; i < block.height; i++ ) {
-		for ( let j = 0; j < block.width; j++ ) {
-			blockPartialPositions.push( {
-				x: block.position.x + j,
-				y: block.position.y + i
-			} );
-		}
-	}
-
-	return blockPartialPositions;
 }
