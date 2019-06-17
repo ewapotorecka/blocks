@@ -57,25 +57,74 @@ class RectangleBlock {
 	}
 }
 
-main();
-
-function main() {
-	const scene = {
+const levels = {
+	1: {
 		board: {
 			position: { x: 0, y: 0 },
 			height: 10,
-			width: 10
-		},
+			width: 10 },
+		exit: { x: 0, y: 0 },
+		playerPosition: { x: 9, y: 9 },
 		blocks: [
 			new RectangleBlock( { x: 3, y: 4 }, 3, 1 ),
 			new CustomBlock( [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ] ),
 			new CustomBlock( [ { x: 5, y: 1 }, { x: 5, y: 2 }, { x: 5, y: 3 }, { x: 4, y: 3 } ] ),
 			new CustomBlock( [ { x: 8, y: 5 }, { x: 8, y: 6 }, { x: 8, y: 7 }, { x: 7, y: 7 }, { x: 7, y: 5 } ] ),
-			new CustomBlock( [ { x: 1, y: 9 }, { x: 3, y: 9 } ] )
-		],
+			new CustomBlock( [ { x: 7, y: 4 }, { x: 8, y: 4 }, { x: 9, y: 4 }, { x: 9, y: 5 }, { x: 9, y: 6 } ] ),
+			new CustomBlock( [ { x: 7, y: 8 }, { x: 8, y: 8 }, { x: 8, y: 9 } ] ),
+			new CustomBlock( [ { x: 1, y: 9 }, { x: 3, y: 9 } ] ) ]
+	},
+
+	2: {
+		board: {
+			position: { x: 0, y: 0 },
+			height: 15,
+			width: 10 },
 		exit: { x: 0, y: 0 },
-		playerPosition: { x: 9, y: 9 }
-	};
+		playerPosition: { x: 9, y: 9 },
+		blocks: [
+			new RectangleBlock( { x: 3, y: 4 }, 3, 1 ),
+			new CustomBlock( [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ] ),
+			new CustomBlock( [ { x: 7, y: 8 }, { x: 8, y: 8 }, { x: 8, y: 9 } ] ),
+			new CustomBlock( [ { x: 1, y: 9 }, { x: 3, y: 9 } ] ) ]
+	}
+};
+
+class Scene {
+	constructor( board, blocks, exit, playerPosition ) {
+		this.board = board;
+		this.exit = exit;
+		this.blocks = blocks;
+		this.playerPosition = playerPosition;
+	}
+
+	change( levels ) {
+		const levelNum = 2;
+		this.board = levels.levelNum.board;
+		this.blocks = levels.levelNum.bloks;
+		this.exit = levels.levelNum.exit;
+		this.playerPosition = levels.levelNum.playerPosition;
+	}
+}
+main();
+
+function main() {
+	const scene = new Scene(
+		{
+			position: { x: 0, y: 0 },
+			height: 10,
+			width: 10 },
+		[
+			new RectangleBlock( { x: 3, y: 4 }, 3, 1 ),
+			new CustomBlock( [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ] ),
+			new CustomBlock( [ { x: 5, y: 1 }, { x: 5, y: 2 }, { x: 5, y: 3 }, { x: 4, y: 3 } ] ),
+			new CustomBlock( [ { x: 8, y: 5 }, { x: 8, y: 6 }, { x: 8, y: 7 }, { x: 7, y: 7 }, { x: 7, y: 5 } ] ),
+			new CustomBlock( [ { x: 7, y: 4 }, { x: 8, y: 4 }, { x: 9, y: 4 }, { x: 9, y: 5 }, { x: 9, y: 6 } ] ),
+			new CustomBlock( [ { x: 7, y: 8 }, { x: 8, y: 8 }, { x: 8, y: 9 } ] ),
+			new CustomBlock( [ { x: 1, y: 9 }, { x: 3, y: 9 } ] ) ],
+		{ x: 0, y: 0 },
+		{ x: 9, y: 9 } );
+
 	const canvas = document.getElementById( 'blocksBoard' );
 	const ctx = canvas.getContext( '2d' );
 	canvas.height = scene.board.height * tileSize;
@@ -153,6 +202,8 @@ function movePlayer( scene, moveVector ) {
 
 	if ( isExitAt( scene, newPosition ) ) {
 		console.log( 'Jupijajej' );
+		scene.playerPosition = newPosition;
+		scene.change( levels );
 		return;
 	}
 
