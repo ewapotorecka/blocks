@@ -58,16 +58,13 @@ class RectangleBlock {
 }
 
 class Scene {
-	constructor( board, blocks, exit, playerPosition ) {
-		this.board = board;
-		this.exit = exit;
-		this.blocks = blocks;
-		this.playerPosition = playerPosition;
+	constructor( levelData ) {
+		this.setLevelData( levelData );
 	}
 
 	setLevelData( level ) {
 		this.board = level.board;
-		this.blocks = level.bloks;
+		this.blocks = level.blocks;
 		this.exit = level.exit;
 		this.playerPosition = level.playerPosition;
 	}
@@ -109,8 +106,8 @@ main();
 
 function main() {
 	const levelNum = 0;
-	const level = levels[ levelNum ];
-	const scene = new Scene( level.board, level.blocks, level.exit, level.playerPosition );
+	const levelData = levels[ levelNum ];
+	const scene = new Scene( levelData );
 
 	const canvas = document.getElementById( 'blocksBoard' );
 	const ctx = canvas.getContext( '2d' );
@@ -190,10 +187,7 @@ function movePlayer( scene, moveVector, levelNum ) {
 	if ( isExitAt( scene, newPosition ) ) {
 		console.log( 'Jupijajej' );
 		scene.playerPosition = newPosition;
-		levelNum += 1;
-		const level = levels[ levelNum ];
-
-		scene.setLevelData( level );
+		loadNextLevel( scene, levelNum );
 		return;
 	}
 
@@ -267,4 +261,10 @@ function isPositionOnBoard( scene, position ) {
 		position.x >= 0 &&
 		position.y >= 0
 	);
+}
+
+function loadNextLevel( scene, levelNum ) {
+	levelNum += 1;
+	const level = levels[ levelNum ];
+	scene.setLevelData( level );
 }
