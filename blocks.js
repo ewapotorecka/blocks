@@ -68,6 +68,70 @@ class Scene {
 		this.exit = level.exit;
 		this.playerPosition = level.playerPosition;
 	}
+
+	isExitAt( position ) {
+		return position.x == this.exit.x && position.y == this.exit.y;
+	}
+
+	isEmptyAt( position ) {
+		for ( const block of this.blocks ) {
+			const blockPartialPositions = block.partialPosition;
+			for ( const partialPosition of blockPartialPositions ) {
+				if ( position.x == partialPosition.x && position.y == partialPosition.y ) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	canBlockBeMoved( block, moveVector ) {
+		const levelData = {
+			board: this.board,
+			blocks: this.blocks.filter( blockInArr => block !== blockInArr ),
+			exit: this.exit,
+			playerPosition: this.playerPosition,
+		};
+
+		const sceneWithoutMovedBlock = new Scene( levelData );
+		const blockPartialPositions = block.partialPosition;
+
+		for ( const partialPosition of blockPartialPositions ) {
+			const newPosition = {
+				x: partialPosition.x + moveVector.x,
+				y: partialPosition.y + moveVector.y
+			};
+
+			if ( !sceneWithoutMovedBlock.isPositionOnBoard( newPosition ) ) {
+				return false;
+			}
+
+			if ( !sceneWithoutMovedBlock.isEmptyAt( newPosition ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	findBlock( position ) {
+		for ( const block of this.blocks ) {
+			for ( const partialPosition of block.partialPosition ) {
+				if ( position.x == partialPosition.x && position.y == partialPosition.y ) {
+					return block;
+				}
+			}
+		}
+	}
+
+	isPositionOnBoard( position ) {
+		return (
+			position.x < this.board.width &&
+			position.y < this.board.height &&
+			position.x >= 0 &&
+			position.y >= 0
+		);
+	}
 }
 
 const levels = [
@@ -102,169 +166,114 @@ const levels = [
 	}
 ];
 
-main();
+class Game {
+	start() {
+		this.levelNum = 0;
+		const levelData = levels[ this.levelNum ];
+		this.scene = new Scene( levelData );
 
-function main() {
-	const levelNum = 0;
-	const levelData = levels[ levelNum ];
-	const scene = new Scene( levelData );
+		const canvas = document.getElementById( 'blocksBoard' );
+		this.ctx = canvas.getContext( '2d' );
+		canvas.height = this.scene.board.height * tileSize;
+		canvas.width = this.scene.board.width * tileSize;
 
-	const canvas = document.getElementById( 'blocksBoard' );
-	const ctx = canvas.getContext( '2d' );
-	canvas.height = scene.board.height * tileSize;
-	canvas.width = scene.board.width * tileSize;
+		this.renderBoard();
 
-	renderBoard( scene, ctx );
-
-	document.addEventListener( 'keyup', event => {
-		if ( event.key === 'ArrowUp' ) {
-			movePlayer( scene, { x: 0, y: -1 } );
-			renderBoard( scene, ctx );
-		} else if ( event.key === 'ArrowDown' ) {
-			movePlayer( scene, { x: 0, y: 1 } );
-			renderBoard( scene, ctx );
-		} else if ( event.key === 'ArrowLeft' ) {
-			movePlayer( scene, { x: -1, y: 0 } );
-			renderBoard( scene, ctx );
-		} else if ( event.key === 'ArrowRight' ) {
-			movePlayer( scene, { x: 1, y: 0 } );
-			renderBoard( scene, ctx );
-		}
-	} );
-}
-
-function renderBoard( scene, ctx ) {
-	clearCanvas( ctx );
-	drawBoard( scene, ctx );
-	drawBlocks( scene, ctx );
-	drawPlayer( scene, ctx );
-	drawExit( scene, ctx );
-}
-
-function drawBoard( scene, ctx ) {
-	const board = scene.board;
-
-	ctx.strokeRect( board.position.x * tileSize, board.position.y * tileSize, board.width * tileSize, board.height * tileSize );
-}
-
-function drawBlocks( scene, ctx ) {
-	const colorAdd = 255 / scene.blocks.length;
-	let colorNum = 0;
-	for ( const block of scene.blocks ) {
-		const color = `rgb( ${ colorNum }, ${ colorNum }, ${ colorNum } )`;
-
-		block.draw( ctx, color );
-		colorNum = colorNum + colorAdd;
-	}
-}
-
-function drawPlayer( scene, ctx ) {
-	const player = scene.playerPosition;
-	ctx.fillStyle = 'pink';
-	ctx.beginPath();
-	ctx.arc( player.x * tileSize + tileSize / 2, player.y * tileSize + tileSize / 2, tileSize / 2, 0, 2 * Math.PI );
-	ctx.fill();
-}
-
-function drawExit( scene, ctx ) {
-	const exit = scene.exit;
-	ctx.strokeRect( exit.x * tileSize, exit.y * tileSize, tileSize, tileSize );
-}
-
-function clearCanvas( ctx ) {
-	ctx.clearRect( 0, 0, ctx.canvas.width, ctx.canvas.height );
-}
-function movePlayer( scene, moveVector, levelNum ) {
-	const newPosition = {
-		x: scene.playerPosition.x + moveVector.x,
-		y: scene.playerPosition.y + moveVector.y
-	};
-
-	if ( !isPositionOnBoard( scene, newPosition ) ) {
-		return;
-	}
-
-	if ( isExitAt( scene, newPosition ) ) {
-		console.log( 'Jupijajej' );
-		scene.playerPosition = newPosition;
-		loadNextLevel( scene, levelNum );
-		return;
-	}
-
-	if ( isEmptyAt( scene, newPosition ) ) {
-		scene.playerPosition = newPosition;
-	} else {
-		const block = findBlock( scene, newPosition );
-
-		if ( canBlockBeMoved( scene, block, moveVector ) ) {
-			scene.playerPosition = newPosition;
-			block.updatePositon( moveVector );
-		}
-	}
-}
-
-function isExitAt( scene, position ) {
-	return position.x == scene.exit.x && position.y == scene.exit.y;
-}
-
-function isEmptyAt( scene, position ) {
-	for ( const block of scene.blocks ) {
-		const blockPartialPositions = block.partialPosition;
-		for ( const partialPosition of blockPartialPositions ) {
-			if ( position.x == partialPosition.x && position.y == partialPosition.y ) {
-				return false;
+		document.addEventListener( 'keyup', event => {
+			if ( event.key === 'ArrowUp' ) {
+				this.movePlayer( { x: 0, y: -1 } );
+				this.renderBoard( this.scene, this.ctx );
+			} else if ( event.key === 'ArrowDown' ) {
+				this.movePlayer( { x: 0, y: 1 } );
+				this.renderBoard( this.ctx );
+			} else if ( event.key === 'ArrowLeft' ) {
+				this.movePlayer( { x: -1, y: 0 } );
+				this.renderBoard( this.scene, this.ctx );
+			} else if ( event.key === 'ArrowRight' ) {
+				this.movePlayer( { x: 1, y: 0 } );
+				this.renderBoard( this.scene, this.ctx );
 			}
+		} );
+	}
+
+	renderBoard() {
+		this.clearCanvas();
+		this.drawBoard();
+		this.drawBlocks();
+		this.drawPlayer();
+		this.drawExit();
+	}
+
+	clearCanvas() {
+		this.ctx.clearRect( 0, 0, this.ctx.canvas.width, this.ctx.canvas.height );
+	}
+
+	drawBoard() {
+		const board = this.scene.board;
+
+		this.ctx.strokeRect( board.position.x * tileSize, board.position.y * tileSize, board.width * tileSize, board.height * tileSize );
+	}
+
+	drawBlocks() {
+		const colorAdd = 255 / this.scene.blocks.length;
+		let colorNum = 0;
+		for ( const block of this.scene.blocks ) {
+			const color = `rgb( ${ colorNum }, ${ colorNum }, ${ colorNum } )`;
+
+			block.draw( this.ctx, color );
+			colorNum = colorNum + colorAdd;
 		}
 	}
-	return true;
-}
 
-function canBlockBeMoved( scene, block, moveVector ) {
-	const sceneWithoutMovedBlock = {
-		...scene,
-		blocks: scene.blocks.filter( blockInArr => block !== blockInArr )
-	};
-	const blockPartialPositions = block.partialPosition;
+	drawPlayer() {
+		const player = this.scene.playerPosition;
+		this.ctx.fillStyle = 'pink';
+		this.ctx.beginPath();
+		this.ctx.arc( player.x * tileSize + tileSize / 2, player.y * tileSize + tileSize / 2, tileSize / 2, 0, 2 * Math.PI );
+		this.ctx.fill();
+	}
 
-	for ( const partialPosition of blockPartialPositions ) {
+	drawExit() {
+		const exit = this.scene.exit;
+		this.ctx.strokeRect( exit.x * tileSize, exit.y * tileSize, tileSize, tileSize );
+	}
+
+	loadNextLevel() {
+		this.levelNum += 1;
+		const level = levels[ this.levelNum ];
+		this.scene.setLevelData( level );
+	}
+
+	movePlayer( moveVector ) {
+		this.moveVector = moveVector;
 		const newPosition = {
-			x: partialPosition.x + moveVector.x,
-			y: partialPosition.y + moveVector.y
+			x: this.scene.playerPosition.x + moveVector.x,
+			y: this.scene.playerPosition.y + moveVector.y
 		};
 
-		if ( !isPositionOnBoard( scene, newPosition ) ) {
-			return false;
+		if ( !this.scene.isPositionOnBoard( newPosition ) ) {
+			return;
 		}
 
-		if ( !isEmptyAt( sceneWithoutMovedBlock, newPosition ) ) {
-			return false;
+		if ( this.scene.isExitAt( newPosition ) ) {
+			console.log( 'Jupijajej' );
+			this.scene.playerPosition = newPosition;
+			this.loadNextLevel();
+			return;
 		}
-	}
 
-	return true;
-}
+		if ( this.scene.isEmptyAt( newPosition ) ) {
+			this.scene.playerPosition = newPosition;
+		} else {
+			const block = this.scene.findBlock( newPosition );
 
-function findBlock( scene, position ) {
-	for ( const block of scene.blocks ) {
-		for ( const partialPosition of block.partialPosition ) {
-			if ( position.x == partialPosition.x && position.y == partialPosition.y ) {
-				return block;
+			if ( this.scene.canBlockBeMoved( block, moveVector ) ) {
+				this.scene.playerPosition = newPosition;
+				block.updatePositon( moveVector );
 			}
 		}
 	}
 }
 
-function isPositionOnBoard( scene, position ) {
-	return (
-		position.x < scene.board.width &&
-		position.y < scene.board.height &&
-		position.x >= 0 &&
-		position.y >= 0
-	);
-}
-
-function loadNextLevel( scene, levelNum ) {
-	levelNum += 1;
-	const level = levels[ levelNum ];
-	scene.setLevelData( level );
-}
+const game = new Game();
+game.start();
