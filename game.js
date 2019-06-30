@@ -59,7 +59,7 @@ class Game {
 
 	drawPlayer() {
 		const player = this.scene.playerPosition;
-		this.ctx.fillStyle = 'pink';
+		this.ctx.fillStyle = '#FAED26';
 		this.ctx.beginPath();
 		this.ctx.arc( player.x * tileSize + tileSize / 2, player.y * tileSize + tileSize / 2, tileSize / 2, 0, 2 * Math.PI );
 		this.ctx.fill();
@@ -67,7 +67,8 @@ class Game {
 
 	drawExit() {
 		const exit = this.scene.exit;
-		this.ctx.strokeRect( exit.x * tileSize, exit.y * tileSize, tileSize, tileSize );
+		this.ctx.fillStyle = '#E64398';
+		this.ctx.fillRect( exit.x * tileSize, exit.y * tileSize, tileSize, tileSize );
 	}
 
 	loadNextLevel() {

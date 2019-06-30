@@ -4,10 +4,49 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Document</title>
+	<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+	<title>Blocks Game</title>
+	<style>
+		canvas {
+			padding-left: 0;
+			padding-right: 0;
+			margin-left: 350px;
+			margin-right: auto;
+			display: block;
+			background-color: #25274D;
+			max-height: 100%;
+	}
+		body {
+			background-color: #AAABB8;
+		}
+		#instruction {
+			display: block;
+			float: left;
+			border-style: solid;
+			border-color: #E64398;
+			margin: 10px;
+			margin-top: 200px;
+			padding: 20px;
+			width: 340px;
+			text-align: center;
+			font-family: Oswald;
+			background-color: white;
+
+		}
+		#canvas-space {
+			display: block;
+			position: 
+		}
+	</style>
 </head>
 <body>
-	<canvas id="blocksBoard"></canvas>
+	<div id="instruction">
+		<div>Get to the exit.</div>
+		<div>You can move one block at a time by pushing it.</div>
+	</div>
+	<div id="canvas-space">
+		<canvas id="blocksBoard"></canvas>
+	</div>
 	<script src="rectangleblock.js"></script>
 	<script src="customblock.js"></script>
 	<script src="scene.js"></script>
