@@ -1,4 +1,7 @@
-class Scene {
+import { RectangleBlock } from './rectangleblock';
+import { CustomBlock } from './customblock';
+
+export class Scene {
 	constructor( levelData ) {
 		this.setLevelData( levelData );
 	}
@@ -75,7 +78,7 @@ class Scene {
 	}
 }
 
-const levels = [
+export const levels = [
 	{
 		board: {
 			position: { x: 0, y: 0 },

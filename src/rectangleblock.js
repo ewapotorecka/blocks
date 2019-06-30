@@ -1,4 +1,6 @@
-class RectangleBlock {
+const tileSize = 50;
+
+export class RectangleBlock {
 	constructor( position, width, height ) {
 		this.position = position;
 		this.width = width;

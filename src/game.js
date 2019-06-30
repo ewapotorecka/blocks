@@ -1,4 +1,8 @@
-class Game {
+const tileSize = 50;
+
+import { Scene, levels } from './scene';
+
+export class Game {
 	start() {
 		this.levelNum = 0;
 		const levelData = levels[ this.levelNum ];

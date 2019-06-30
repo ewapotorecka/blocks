@@ -1,4 +1,6 @@
-class CustomBlock {
+const tileSize = 50;
+
+export class CustomBlock {
 	constructor( positions ) {
 		this.positions = positions;
 	}
