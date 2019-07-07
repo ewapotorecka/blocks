@@ -1,4 +1,3 @@
-const tileSize = 50;
 
 export class RectangleBlock {
 	constructor( position, width, height ) {
@@ -7,7 +6,7 @@ export class RectangleBlock {
 		this.height = height;
 	}
 
-	draw( ctx ) {
+	draw( ctx, tileSize ) {
 		ctx.fillStyle = 'black';
 		ctx.fillRect( this.position.x * tileSize, this.position.y * tileSize, this.width * tileSize, this.height * tileSize );
 	}

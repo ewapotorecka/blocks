@@ -82,7 +82,7 @@ export const levels = [
 	{
 		board: {
 			position: { x: 0, y: 0 },
-			height: 10,
+			height: 20,
 			width: 10 },
 		exit: { x: 0, y: 0 },
 		playerPosition: { x: 9, y: 9 },

@@ -1,20 +1,29 @@
-const tileSize = 50;
+// musi sluchac na event jak sie zmienia szerokosc/wysokosc
 
 import { Scene, levels } from './scene';
 
 export class Game {
 	start() {
 		this.levelNum = 0;
+		this.levelInfo = document.getElementById( 'level' );
+		const skipLevelButton = document.getElementById( 'skip-level' );
 		const levelData = levels[ this.levelNum ];
 		this.scene = new Scene( levelData );
+		if ( window.innerHeight / this.scene.board.height < ( window.innerWidth - 400 ) / this.scene.board.width ) {
+			this.tileSize = window.innerHeight / this.scene.board.height;
+		} else {
+			this.tileSize = ( window.innerWidth - 400 ) / this.scene.board.width;
+		}
 
 		const canvas = document.getElementById( 'blocksBoard' );
 		this.ctx = canvas.getContext( '2d' );
-		canvas.height = this.scene.board.height * tileSize;
-		canvas.width = this.scene.board.width * tileSize;
+		canvas.height = this.scene.board.height * this.tileSize;
+		canvas.width = this.scene.board.width * this.tileSize;
 
+		this.levelInfo.innerText = 'Level ' + ( this.levelNum + 1 );
 		this.renderBoard();
 
+		skipLevelButton.addEventListener( 'click', () => this.loadNextLevel() );
 		document.addEventListener( 'keyup', event => {
 			if ( event.key === 'ArrowUp' ) {
 				this.movePlayer( { x: 0, y: -1 } );
@@ -47,7 +56,9 @@ export class Game {
 	drawBoard() {
 		const board = this.scene.board;
 
-		this.ctx.strokeRect( board.position.x * tileSize, board.position.y * tileSize, board.width * tileSize, board.height * tileSize );
+		this.ctx.strokeRect(
+			board.position.x * this.tileSize, board.position.y * this.tileSize, board.width * this.tileSize, board.height * this.tileSize
+		);
 	}
 
 	drawBlocks() {
@@ -56,7 +67,7 @@ export class Game {
 		for ( const block of this.scene.blocks ) {
 			const color = `rgb( ${ colorNum }, ${ colorNum }, ${ colorNum } )`;
 
-			block.draw( this.ctx, color );
+			block.draw( this.ctx, color, this.tileSize );
 			colorNum = colorNum + colorAdd;
 		}
 	}
@@ -65,20 +76,27 @@ export class Game {
 		const player = this.scene.playerPosition;
 		this.ctx.fillStyle = '#FAED26';
 		this.ctx.beginPath();
-		this.ctx.arc( player.x * tileSize + tileSize / 2, player.y * tileSize + tileSize / 2, tileSize / 2, 0, 2 * Math.PI );
+		this.ctx.arc(
+			player.x * this.tileSize + this.tileSize / 2, player.y * this.tileSize + this.tileSize / 2, this.tileSize / 2, 0, 2 * Math.PI
+		);
 		this.ctx.fill();
 	}
 
 	drawExit() {
 		const exit = this.scene.exit;
 		this.ctx.fillStyle = '#E64398';
-		this.ctx.fillRect( exit.x * tileSize, exit.y * tileSize, tileSize, tileSize );
+		this.ctx.fillRect( exit.x * this.tileSize, exit.y * this.tileSize, this.tileSize, this.tileSize );
 	}
 
 	loadNextLevel() {
 		this.levelNum += 1;
 		const level = levels[ this.levelNum ];
 		this.scene.setLevelData( level );
+		this.tileSize = window.innerHeight / level.board.height;
+		this.ctx.canvas.height = level.board.height * this.tileSize;
+		this.ctx.canvas.width = level.board.width * this.tileSize;
+		this.levelInfo.innerText = 'Level ' + ( this.levelNum + 1 );
+		this.renderBoard();
 	}
 
 	movePlayer( moveVector ) {

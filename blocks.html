@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,39 +15,87 @@
 			margin-right: auto;
 			display: block;
 			background-color: #25274D;
-			max-height: 100%;
-	}
+		}
+
 		body {
 			background-color: #AAABB8;
 		}
+
 		#instruction {
-			display: block;
-			float: left;
+			position: absolute;
+			left: -300px;
 			border-style: solid;
 			border-color: #E64398;
-			margin: 10px;
-			margin-top: 200px;
-			padding: 20px;
 			width: 340px;
 			text-align: center;
 			font-family: Oswald;
 			background-color: white;
+			cursor: pointer;
+			transition: 0.3s all ease-in-out;
 
 		}
+
+		#instruction.active {
+			left: 0px;
+		}
+
+		#instruction button {
+			float: right;
+			background: transparent;
+			border: none;
+			outline: none;
+			cursor: pointer;
+
+		}
+		
+		#instruction button svg {
+			height: 30px;
+			width: 30px;
+			padding: 15px 0;
+			transition: 0.3s all ease-in-out;
+		}
+
+		#instruction.active button svg {
+			transform: rotate( 180deg );
+		}
+
+		#skip-level {
+			background-color: aqua;
+			border: solid black;
+		}
+
 		#canvas-space {
 			display: block;
-			position: 
 		}
 	</style>
 </head>
+
 <body>
 	<div id="instruction">
+		<button>
+				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">
+					<g>
+					  <path d="m40.4,121.3c-0.8,0.8-1.8,1.2-2.9,1.2s-2.1-0.4-2.9-1.2c-1.6-1.6-1.6-4.2 0-5.8l51-51-51-51c-1.6-1.6-1.6-4.2 0-5.8 1.6-1.6 4.2-1.6 5.8,0l53.9,53.9c1.6,1.6 1.6,4.2 0,5.8l-53.9,53.9z"/>
+					</g>
+				  </svg>
+		</button>
 		<div>Get to the exit.</div>
 		<div>You can move one block at a time by pushing it.</div>
+		<div id="level"></div>
+		<button id="skip-level">Skip level</button>
+		<div id="level-list"></div>
+		
 	</div>
 	<div id="canvas-space">
 		<canvas id="blocksBoard"></canvas>
 	</div>
 	<script src="dist/main.js"></script>
+	<script>
+		const instructionContainer = document.getElementById( 'instruction' );
+		instructionContainer.addEventListener( 'click', () => {
+			instructionContainer.classList.toggle( 'active' );
+		} );
+	</script>
 </body>
+
 </html>
