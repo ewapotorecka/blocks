@@ -1,93 +1,6 @@
-// TODO: The board position does not make sense. It will be always the (0, 0) point.
-
 import { RectangleBlock } from './rectangleblock';
 import { CustomBlock } from './customblock';
 
-export class Scene {
-	constructor( levelData ) {
-		this.setLevelData( levelData );
-	}
-
-	setLevelData( level ) {
-		// level = JSON.parse( JSON.stringify( level ) );
-		// TODO: All these things should be private and be available only from this class.
-		// TODO: All these things should be cloned to not change original objects later.
-		this.board = level.board;
-		this.blocks = level.blocks;
-		this.exit = level.exit;
-		this.playerPosition = level.playerPosition;
-	}
-
-	_parseBlocks( blocks ) {
-		// 
-	}
-
-	isExitAt( position ) {
-		return position.x == this.exit.x && position.y == this.exit.y;
-	}
-
-	isEmptyAt( position ) {
-		for ( const block of this.blocks ) {
-			const blockPartialPositions = block.partialPosition;
-			for ( const partialPosition of blockPartialPositions ) {
-				if ( position.x == partialPosition.x && position.y == partialPosition.y ) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	canBlockBeMoved( block, moveVector ) {
-		const levelData = {
-			board: this.board,
-			blocks: this.blocks.filter( blockInArr => block !== blockInArr ),
-			exit: this.exit,
-			playerPosition: this.playerPosition,
-		};
-
-		const sceneWithoutMovedBlock = new Scene( levelData );
-		const blockPartialPositions = block.partialPosition;
-
-		for ( const partialPosition of blockPartialPositions ) {
-			const newPosition = {
-				x: partialPosition.x + moveVector.x,
-				y: partialPosition.y + moveVector.y
-			};
-
-			if ( !sceneWithoutMovedBlock.isPositionOnBoard( newPosition ) ) {
-				return false;
-			}
-
-			if ( !sceneWithoutMovedBlock.isEmptyAt( newPosition ) ) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	findBlock( position ) {
-		for ( const block of this.blocks ) {
-			for ( const partialPosition of block.partialPosition ) {
-				if ( position.x == partialPosition.x && position.y == partialPosition.y ) {
-					return block;
-				}
-			}
-		}
-	}
-
-	isPositionOnBoard( position ) {
-		return (
-			position.x < this.board.width &&
-			position.y < this.board.height &&
-			position.x >= 0 &&
-			position.y >= 0
-		);
-	}
-}
-
-// TODO: These levels should be moved outside of this file.
 export const levels = [
 	{
 		board: {
@@ -97,7 +10,6 @@ export const levels = [
 		exit: { x: 0, y: 0 },
 		playerPosition: { x: 9, y: 9 },
 		blocks: [
-			// { type: 'rectangle', position: { x: 3, y: 4 }, width: 3, height: 1 },
 			new RectangleBlock( { x: 3, y: 4 }, 3, 1 ),
 			new CustomBlock( [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ] ),
 			new CustomBlock( [ { x: 5, y: 1 }, { x: 5, y: 2 }, { x: 5, y: 3 }, { x: 4, y: 3 } ] ),

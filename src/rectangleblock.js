@@ -6,8 +6,8 @@ export class RectangleBlock {
 		this.height = height;
 	}
 
-	draw( ctx, tileSize ) {
-		ctx.fillStyle = 'black';
+	draw( ctx, color, tileSize ) {
+		ctx.fillStyle = color;
 		ctx.fillRect( this.position.x * tileSize, this.position.y * tileSize, this.width * tileSize, this.height * tileSize );
 	}
 
@@ -26,7 +26,7 @@ export class RectangleBlock {
 		return blockPartialPositions;
 	}
 
-	updatePositon( moveVector ) {
+	updatePosition( moveVector ) {
 		this.position.x += moveVector.x;
 		this.position.y += moveVector.y;
 	}

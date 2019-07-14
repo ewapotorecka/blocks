@@ -15,7 +15,7 @@ export class CustomBlock {
 		return this.positions;
 	}
 
-	updatePositon( moveVector ) {
+	updatePosition( moveVector ) {
 		for ( const position of this.positions ) {
 			position.x += moveVector.x;
 			position.y += moveVector.y;

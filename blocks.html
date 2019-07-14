@@ -19,6 +19,7 @@
 
 		body {
 			background-color: #AAABB8;
+			margin: 0;
 		}
 
 		#instruction {
@@ -47,7 +48,7 @@
 			cursor: pointer;
 
 		}
-		
+
 		#instruction button svg {
 			height: 30px;
 			width: 30px;
@@ -56,7 +57,7 @@
 		}
 
 		#instruction.active button svg {
-			transform: rotate( 180deg );
+			transform: rotate(180deg);
 		}
 
 		#skip-level {
@@ -73,18 +74,21 @@
 <body>
 	<div id="instruction">
 		<button>
-				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">
-					<g>
-					  <path d="m40.4,121.3c-0.8,0.8-1.8,1.2-2.9,1.2s-2.1-0.4-2.9-1.2c-1.6-1.6-1.6-4.2 0-5.8l51-51-51-51c-1.6-1.6-1.6-4.2 0-5.8 1.6-1.6 4.2-1.6 5.8,0l53.9,53.9c1.6,1.6 1.6,4.2 0,5.8l-53.9,53.9z"/>
-					</g>
-				  </svg>
+			<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129"
+				xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">
+				<g>
+					<path
+						d="m40.4,121.3c-0.8,0.8-1.8,1.2-2.9,1.2s-2.1-0.4-2.9-1.2c-1.6-1.6-1.6-4.2 0-5.8l51-51-51-51c-1.6-1.6-1.6-4.2 0-5.8 1.6-1.6 4.2-1.6 5.8,0l53.9,53.9c1.6,1.6 1.6,4.2 0,5.8l-53.9,53.9z" />
+				</g>
+			</svg>
 		</button>
 		<div>Get to the exit.</div>
 		<div>You can move one block at a time by pushing it.</div>
 		<div id="level"></div>
 		<button id="skip-level">Skip level</button>
+		<button id="reset">Reset</button>
 		<div id="level-list"></div>
-		
+
 	</div>
 	<div id="canvas-space">
 		<canvas id="blocksBoard"></canvas>

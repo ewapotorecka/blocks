@@ -1,32 +1,43 @@
-// musi sluchac na event jak sie zmienia szerokosc/wysokosc
+// TODO: The Game class should listen to window dimension changes.
 
 import { Scene, levels } from './scene';
 
 export class Game {
 	start() {
 		this.levelNum = 0;
+		// TODO: The following things should be handled somewhere else (nie w grze):
 		this.levelInfo = document.getElementById( 'level' );
+		this.levelList = document.getElementById( 'level-list' );
 		const skipLevelButton = document.getElementById( 'skip-level' );
+
 		const levelData = levels[ this.levelNum ];
 		this.scene = new Scene( levelData );
-		if ( window.innerHeight / this.scene.board.height < ( window.innerWidth - 400 ) / this.scene.board.width ) {
-			this.tileSize = window.innerHeight / this.scene.board.height;
-		} else {
-			this.tileSize = ( window.innerWidth - 400 ) / this.scene.board.width;
-		}
 
+		// TODO: This should be moved to a separate method as this logic should be reused during resizing.
+
+		this.sizeBoard();
 		const canvas = document.getElementById( 'blocksBoard' );
 		this.ctx = canvas.getContext( '2d' );
 		canvas.height = this.scene.board.height * this.tileSize;
 		canvas.width = this.scene.board.width * this.tileSize;
 
-		this.levelInfo.innerText = 'Level ' + ( this.levelNum + 1 );
+		// TODO: This should be removed from here too:
+		// TODO: The `Game` class should expose necessary events and properties / methods instead.
+		this.levelInfo.innerText = 'Level ' + ( this.levelNum + 1 ); // TODO: <- Change it to a string template.
+		for ( const level of levels ) {
+			const button = document.createElement( 'BUTTON' );
+			this.levelList.appendChild( button );
+			button.innerText = levels.indexOf( level ) + 1;
+		}
+		skipLevelButton.addEventListener( 'click', () => this.loadNextLevel() );
+
 		this.renderBoard();
 
-		skipLevelButton.addEventListener( 'click', () => this.loadNextLevel() );
+		// TODO: This should be moved to a separate method / helper fn.
 		document.addEventListener( 'keyup', event => {
 			if ( event.key === 'ArrowUp' ) {
 				this.movePlayer( { x: 0, y: -1 } );
+				// TODO: check arguments passed here and below.
 				this.renderBoard( this.scene, this.ctx );
 			} else if ( event.key === 'ArrowDown' ) {
 				this.movePlayer( { x: 0, y: 1 } );
@@ -41,6 +52,9 @@ export class Game {
 		} );
 	}
 
+	// TODO: The `Renderer` class would be cool here. This class could render (draw) the current scene on the canvas.
+	// TODO: So instead we could have the `this.renderer.render();` invocation.
+	// TODO: The tile size could be calculated in the renderer.
 	renderBoard() {
 		this.clearCanvas();
 		this.drawBoard();
@@ -95,12 +109,14 @@ export class Game {
 		this.tileSize = window.innerHeight / level.board.height;
 		this.ctx.canvas.height = level.board.height * this.tileSize;
 		this.ctx.canvas.width = level.board.width * this.tileSize;
+
+		// TODO: This should not be here as this is not a part of the `Game` class logic.
 		this.levelInfo.innerText = 'Level ' + ( this.levelNum + 1 );
+
 		this.renderBoard();
 	}
 
 	movePlayer( moveVector ) {
-		this.moveVector = moveVector;
 		const newPosition = {
 			x: this.scene.playerPosition.x + moveVector.x,
 			y: this.scene.playerPosition.y + moveVector.y
@@ -124,8 +140,19 @@ export class Game {
 
 			if ( this.scene.canBlockBeMoved( block, moveVector ) ) {
 				this.scene.playerPosition = newPosition;
-				block.updatePositon( moveVector );
+
+				// TODO: (wording).
+				// TODO: Actually this method should be renamed to `move( moveVector )`.
+				block.updatePosition( moveVector );
 			}
+		}
+	}
+
+	sizeBoard() {
+		if ( window.innerHeight / this.scene.board.height < ( window.innerWidth - 400 ) / this.scene.board.width ) {
+			this.tileSize = window.innerHeight / this.scene.board.height;
+		} else {
+			this.tileSize = ( window.innerWidth - 400 ) / this.scene.board.width;
 		}
 	}
 }
