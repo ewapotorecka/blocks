@@ -1,6 +1,7 @@
 // TODO: The Game class should listen to window dimension changes.
 
-import { Scene, levels } from './scene';
+import { Scene } from './scene';
+import { levels } from './levels';
 
 export class Game {
 	start() {
@@ -12,8 +13,6 @@ export class Game {
 
 		const levelData = levels[ this.levelNum ];
 		this.scene = new Scene( levelData );
-
-		// TODO: This should be moved to a separate method as this logic should be reused during resizing.
 
 		this.sizeBoard();
 		const canvas = document.getElementById( 'blocksBoard' );
@@ -32,24 +31,11 @@ export class Game {
 		skipLevelButton.addEventListener( 'click', () => this.loadNextLevel() );
 
 		this.renderBoard();
+		this.helper();
 
-		// TODO: This should be moved to a separate method / helper fn.
-		document.addEventListener( 'keyup', event => {
-			if ( event.key === 'ArrowUp' ) {
-				this.movePlayer( { x: 0, y: -1 } );
-				// TODO: check arguments passed here and below.
-				this.renderBoard( this.scene, this.ctx );
-			} else if ( event.key === 'ArrowDown' ) {
-				this.movePlayer( { x: 0, y: 1 } );
-				this.renderBoard( this.ctx );
-			} else if ( event.key === 'ArrowLeft' ) {
-				this.movePlayer( { x: -1, y: 0 } );
-				this.renderBoard( this.scene, this.ctx );
-			} else if ( event.key === 'ArrowRight' ) {
-				this.movePlayer( { x: 1, y: 0 } );
-				this.renderBoard( this.scene, this.ctx );
-			}
-		} );
+		// window.addEventListener( 'resize', () => {
+		// 	this.sizeBoard();
+		// } );
 	}
 
 	// TODO: The `Renderer` class would be cool here. This class could render (draw) the current scene on the canvas.
@@ -154,5 +140,24 @@ export class Game {
 		} else {
 			this.tileSize = ( window.innerWidth - 400 ) / this.scene.board.width;
 		}
+	}
+
+	helper() {
+		document.addEventListener( 'keyup', event => {
+			if ( event.key === 'ArrowUp' ) {
+				this.movePlayer( { x: 0, y: -1 } );
+				// TODO: check arguments passed here and below.
+				this.renderBoard( this.scene, this.ctx );
+			} else if ( event.key === 'ArrowDown' ) {
+				this.movePlayer( { x: 0, y: 1 } );
+				this.renderBoard( this.ctx );
+			} else if ( event.key === 'ArrowLeft' ) {
+				this.movePlayer( { x: -1, y: 0 } );
+				this.renderBoard( this.scene, this.ctx );
+			} else if ( event.key === 'ArrowRight' ) {
+				this.movePlayer( { x: 1, y: 0 } );
+				this.renderBoard( this.scene, this.ctx );
+			}
+		} );
 	}
 }
