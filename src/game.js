@@ -33,9 +33,9 @@ export class Game {
 		this.renderBoard();
 		this.helper();
 
-		// window.addEventListener( 'resize', () => {
-		// 	this.sizeBoard();
-		// } );
+		window.addEventListener( 'resize', () => {
+			this.sizeBoard();
+		} );
 	}
 
 	// TODO: The `Renderer` class would be cool here. This class could render (draw) the current scene on the canvas.
@@ -158,6 +158,10 @@ export class Game {
 				this.movePlayer( { x: 1, y: 0 } );
 				this.renderBoard( this.scene, this.ctx );
 			}
+		} );
+		window.addEventListener( 'resize', () => {
+			this.sizeBoard();
+			this.renderBoard();
 		} );
 	}
 }
