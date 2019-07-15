@@ -1,4 +1,3 @@
-// TODO: The Game class should listen to window dimension changes.
 
 import { Scene } from './scene';
 import { levels } from './levels';
@@ -6,36 +5,17 @@ import { levels } from './levels';
 export class Game {
 	start() {
 		this.levelNum = 0;
-		// TODO: The following things should be handled somewhere else (nie w grze):
-		this.levelInfo = document.getElementById( 'level' );
-		this.levelList = document.getElementById( 'level-list' );
-		const skipLevelButton = document.getElementById( 'skip-level' );
-
 		const levelData = levels[ this.levelNum ];
 		this.scene = new Scene( levelData );
-
 		this.sizeBoard();
+
 		const canvas = document.getElementById( 'blocksBoard' );
 		this.ctx = canvas.getContext( '2d' );
 		canvas.height = this.scene.board.height * this.tileSize;
 		canvas.width = this.scene.board.width * this.tileSize;
 
-		// TODO: This should be removed from here too:
-		// TODO: The `Game` class should expose necessary events and properties / methods instead.
-		this.levelInfo.innerText = 'Level ' + ( this.levelNum + 1 ); // TODO: <- Change it to a string template.
-		for ( const level of levels ) {
-			const button = document.createElement( 'BUTTON' );
-			this.levelList.appendChild( button );
-			button.innerText = levels.indexOf( level ) + 1;
-		}
-		skipLevelButton.addEventListener( 'click', () => this.loadNextLevel() );
-
 		this.renderBoard();
 		this.helper();
-
-		window.addEventListener( 'resize', () => {
-			this.sizeBoard();
-		} );
 	}
 
 	// TODO: The `Renderer` class would be cool here. This class could render (draw) the current scene on the canvas.
@@ -57,7 +37,7 @@ export class Game {
 		const board = this.scene.board;
 
 		this.ctx.strokeRect(
-			board.position.x * this.tileSize, board.position.y * this.tileSize, board.width * this.tileSize, board.height * this.tileSize
+			0, 0, board.width * this.tileSize, board.height * this.tileSize
 		);
 	}
 
@@ -88,21 +68,21 @@ export class Game {
 		this.ctx.fillRect( exit.x * this.tileSize, exit.y * this.tileSize, this.tileSize, this.tileSize );
 	}
 
-	loadNextLevel() {
-		this.levelNum += 1;
+	loadLevel( id ) {
+		this.levelNum = id;
 		const level = levels[ this.levelNum ];
 		this.scene.setLevelData( level );
 		this.tileSize = window.innerHeight / level.board.height;
 		this.ctx.canvas.height = level.board.height * this.tileSize;
 		this.ctx.canvas.width = level.board.width * this.tileSize;
-
-		// TODO: This should not be here as this is not a part of the `Game` class logic.
-		this.levelInfo.innerText = 'Level ' + ( this.levelNum + 1 );
-
 		this.renderBoard();
 	}
+	loadNextLevel() {
+		const num = this.levelNum + 1;
+		this.loadLevel( num );
+	}
 
-	movePlayer( moveVector ) {
+	move( moveVector ) {
 		const newPosition = {
 			x: this.scene.playerPosition.x + moveVector.x,
 			y: this.scene.playerPosition.y + moveVector.y
@@ -113,7 +93,6 @@ export class Game {
 		}
 
 		if ( this.scene.isExitAt( newPosition ) ) {
-			console.log( 'Jupijajej' );
 			this.scene.playerPosition = newPosition;
 			this.loadNextLevel();
 			return;
@@ -126,9 +105,6 @@ export class Game {
 
 			if ( this.scene.canBlockBeMoved( block, moveVector ) ) {
 				this.scene.playerPosition = newPosition;
-
-				// TODO: (wording).
-				// TODO: Actually this method should be renamed to `move( moveVector )`.
 				block.updatePosition( moveVector );
 			}
 		}
@@ -145,17 +121,16 @@ export class Game {
 	helper() {
 		document.addEventListener( 'keyup', event => {
 			if ( event.key === 'ArrowUp' ) {
-				this.movePlayer( { x: 0, y: -1 } );
-				// TODO: check arguments passed here and below.
+				this.move( { x: 0, y: -1 } );
 				this.renderBoard( this.scene, this.ctx );
 			} else if ( event.key === 'ArrowDown' ) {
-				this.movePlayer( { x: 0, y: 1 } );
+				this.move( { x: 0, y: 1 } );
 				this.renderBoard( this.ctx );
 			} else if ( event.key === 'ArrowLeft' ) {
-				this.movePlayer( { x: -1, y: 0 } );
+				this.move( { x: -1, y: 0 } );
 				this.renderBoard( this.scene, this.ctx );
 			} else if ( event.key === 'ArrowRight' ) {
-				this.movePlayer( { x: 1, y: 0 } );
+				this.move( { x: 1, y: 0 } );
 				this.renderBoard( this.scene, this.ctx );
 			}
 		} );

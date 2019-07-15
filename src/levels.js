@@ -4,7 +4,6 @@ import { CustomBlock } from './customblock';
 export const levels = [
 	{
 		board: {
-			position: { x: 0, y: 0 },
 			height: 20,
 			width: 10 },
 		exit: { x: 0, y: 0 },
@@ -20,7 +19,6 @@ export const levels = [
 	},
 	{
 		board: {
-			position: { x: 0, y: 0 },
 			height: 10,
 			width: 10 },
 		exit: { x: 0, y: 0 },
@@ -33,7 +31,6 @@ export const levels = [
 	},
 	{
 		board: {
-			position: { x: 0, y: 0 },
 			height: 8,
 			width: 9 },
 		exit: { x: 0, y: 0 },
@@ -50,7 +47,6 @@ export const levels = [
 	},
 	{
 		board: {
-			position: { x: 0, y: 0 },
 			height: 9,
 			width: 9
 		},
@@ -74,7 +70,6 @@ export const levels = [
 	},
 	{
 		board: {
-			position: { x: 0, y: 0 },
 			height: 8,
 			width: 9
 		},
