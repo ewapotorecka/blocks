@@ -7,15 +7,19 @@ export class Game {
 		this.levelNum = 0;
 		const levelData = levels[ this.levelNum ];
 		this.scene = new Scene( levelData );
-		this.sizeBoard();
 
 		const canvas = document.getElementById( 'blocksBoard' );
 		this.ctx = canvas.getContext( '2d' );
-		canvas.height = this.scene.board.height * this.tileSize;
-		canvas.width = this.scene.board.width * this.tileSize;
+
+		this.resizeBoard();
 
 		this.renderBoard();
-		this.helper();
+		this.handleKeyboard();
+
+		window.addEventListener( 'resize', () => {
+			this.resizeBoard();
+			this.renderBoard();
+		} );
 	}
 
 	// TODO: The `Renderer` class would be cool here. This class could render (draw) the current scene on the canvas.
@@ -110,15 +114,18 @@ export class Game {
 		}
 	}
 
-	sizeBoard() {
+	resizeBoard() {
 		if ( window.innerHeight / this.scene.board.height < ( window.innerWidth - 400 ) / this.scene.board.width ) {
 			this.tileSize = window.innerHeight / this.scene.board.height;
 		} else {
 			this.tileSize = ( window.innerWidth - 400 ) / this.scene.board.width;
 		}
+
+		this.ctx.canvas.height = this.scene.board.height * this.tileSize;
+		this.ctx.canvas.width = this.scene.board.width * this.tileSize;
 	}
 
-	helper() {
+	handleKeyboard() {
 		document.addEventListener( 'keyup', event => {
 			if ( event.key === 'ArrowUp' ) {
 				this.move( { x: 0, y: -1 } );
@@ -133,10 +140,6 @@ export class Game {
 				this.move( { x: 1, y: 0 } );
 				this.renderBoard( this.scene, this.ctx );
 			}
-		} );
-		window.addEventListener( 'resize', () => {
-			this.sizeBoard();
-			this.renderBoard();
 		} );
 	}
 }
