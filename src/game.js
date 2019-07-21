@@ -1,6 +1,7 @@
 
 import { Scene } from './scene';
 import { levels } from './levels';
+import { Renderer } from './renderer';
 
 export class Game {
 	start() {
@@ -11,79 +12,29 @@ export class Game {
 		const canvas = document.getElementById( 'blocksBoard' );
 		this.ctx = canvas.getContext( '2d' );
 
-		this.resizeBoard();
-
-		this.renderBoard();
+		this.renderer = new Renderer( this.ctx, this.scene );
+		this.renderer.resizeBoard();
+		this.renderer.renderBoard();
 		this.handleKeyboard();
 
 		window.addEventListener( 'resize', () => {
-			this.resizeBoard();
-			this.renderBoard();
+			this.renderer.resizeBoard();
+			this.renderer.renderBoard();
 		} );
 	}
 
-	// TODO: The `Renderer` class would be cool here. This class could render (draw) the current scene on the canvas.
-	// TODO: So instead we could have the `this.renderer.render();` invocation.
-	// TODO: The tile size could be calculated in the renderer.
-	renderBoard() {
-		this.clearCanvas();
-		this.drawBoard();
-		this.drawBlocks();
-		this.drawPlayer();
-		this.drawExit();
-	}
+	loadNextLevel() {
+		const num = this.levelNum + 1;
 
-	clearCanvas() {
-		this.ctx.clearRect( 0, 0, this.ctx.canvas.width, this.ctx.canvas.height );
-	}
-
-	drawBoard() {
-		const board = this.scene.board;
-
-		this.ctx.strokeRect(
-			0, 0, board.width * this.tileSize, board.height * this.tileSize
-		);
-	}
-
-	drawBlocks() {
-		const colorAdd = 255 / this.scene.blocks.length;
-		let colorNum = 0;
-		for ( const block of this.scene.blocks ) {
-			const color = `rgb( ${ colorNum }, ${ colorNum }, ${ colorNum } )`;
-
-			block.draw( this.ctx, color, this.tileSize );
-			colorNum = colorNum + colorAdd;
-		}
-	}
-
-	drawPlayer() {
-		const player = this.scene.playerPosition;
-		this.ctx.fillStyle = '#FAED26';
-		this.ctx.beginPath();
-		this.ctx.arc(
-			player.x * this.tileSize + this.tileSize / 2, player.y * this.tileSize + this.tileSize / 2, this.tileSize / 2, 0, 2 * Math.PI
-		);
-		this.ctx.fill();
-	}
-
-	drawExit() {
-		const exit = this.scene.exit;
-		this.ctx.fillStyle = '#E64398';
-		this.ctx.fillRect( exit.x * this.tileSize, exit.y * this.tileSize, this.tileSize, this.tileSize );
+		this.loadLevel( num );
 	}
 
 	loadLevel( id ) {
 		this.levelNum = id;
 		const level = levels[ this.levelNum ];
 		this.scene.setLevelData( level );
-		this.tileSize = window.innerHeight / level.board.height;
-		this.ctx.canvas.height = level.board.height * this.tileSize;
-		this.ctx.canvas.width = level.board.width * this.tileSize;
-		this.renderBoard();
-	}
-	loadNextLevel() {
-		const num = this.levelNum + 1;
-		this.loadLevel( num );
+		this.renderer.resizeBoard();
+		this.renderer.renderBoard();
 	}
 
 	move( moveVector ) {
@@ -114,31 +65,20 @@ export class Game {
 		}
 	}
 
-	resizeBoard() {
-		if ( window.innerHeight / this.scene.board.height < ( window.innerWidth - 400 ) / this.scene.board.width ) {
-			this.tileSize = window.innerHeight / this.scene.board.height;
-		} else {
-			this.tileSize = ( window.innerWidth - 400 ) / this.scene.board.width;
-		}
-
-		this.ctx.canvas.height = this.scene.board.height * this.tileSize;
-		this.ctx.canvas.width = this.scene.board.width * this.tileSize;
-	}
-
 	handleKeyboard() {
 		document.addEventListener( 'keyup', event => {
 			if ( event.key === 'ArrowUp' ) {
 				this.move( { x: 0, y: -1 } );
-				this.renderBoard( this.scene, this.ctx );
+				this.renderer.renderBoard();
 			} else if ( event.key === 'ArrowDown' ) {
 				this.move( { x: 0, y: 1 } );
-				this.renderBoard( this.ctx );
+				this.renderer.renderBoard();
 			} else if ( event.key === 'ArrowLeft' ) {
 				this.move( { x: -1, y: 0 } );
-				this.renderBoard( this.scene, this.ctx );
+				this.renderer.renderBoard();
 			} else if ( event.key === 'ArrowRight' ) {
 				this.move( { x: 1, y: 0 } );
-				this.renderBoard( this.scene, this.ctx );
+				this.renderer.renderBoard();
 			}
 		} );
 	}

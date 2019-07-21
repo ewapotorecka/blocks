@@ -1,4 +1,4 @@
-// TODO: The board position does not make sense. It will be always the (0, 0) point.
+
 
 export class Scene {
 	constructor( levelData ) {
