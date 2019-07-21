@@ -1,12 +1,13 @@
-class RectangleBlock {
+
+export class RectangleBlock {
 	constructor( position, width, height ) {
 		this.position = position;
 		this.width = width;
 		this.height = height;
 	}
 
-	draw( ctx ) {
-		ctx.fillStyle = 'black';
+	draw( ctx, color, tileSize ) {
+		ctx.fillStyle = color;
 		ctx.fillRect( this.position.x * tileSize, this.position.y * tileSize, this.width * tileSize, this.height * tileSize );
 	}
 
@@ -25,7 +26,7 @@ class RectangleBlock {
 		return blockPartialPositions;
 	}
 
-	updatePositon( moveVector ) {
+	updatePosition( moveVector ) {
 		this.position.x += moveVector.x;
 		this.position.y += moveVector.y;
 	}

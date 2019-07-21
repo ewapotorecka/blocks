@@ -1,13 +1,22 @@
-class Scene {
+
+
+export class Scene {
 	constructor( levelData ) {
 		this.setLevelData( levelData );
 	}
 
 	setLevelData( level ) {
+		// level = JSON.parse( JSON.stringify( level ) );
+		// TODO: All these things should be private and be available only from this class.
+		// TODO: All these things should be cloned to not change original objects later.
 		this.board = level.board;
 		this.blocks = level.blocks;
 		this.exit = level.exit;
 		this.playerPosition = level.playerPosition;
+	}
+
+	_parseBlocks( blocks ) {
+		// 
 	}
 
 	isExitAt( position ) {
@@ -75,34 +84,3 @@ class Scene {
 	}
 }
 
-const levels = [
-	{
-		board: {
-			position: { x: 0, y: 0 },
-			height: 10,
-			width: 10 },
-		exit: { x: 0, y: 0 },
-		playerPosition: { x: 9, y: 9 },
-		blocks: [
-			new RectangleBlock( { x: 3, y: 4 }, 3, 1 ),
-			new CustomBlock( [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ] ),
-			new CustomBlock( [ { x: 5, y: 1 }, { x: 5, y: 2 }, { x: 5, y: 3 }, { x: 4, y: 3 } ] ),
-			new CustomBlock( [ { x: 8, y: 5 }, { x: 8, y: 6 }, { x: 8, y: 7 }, { x: 7, y: 7 }, { x: 7, y: 5 } ] ),
-			new CustomBlock( [ { x: 7, y: 4 }, { x: 8, y: 4 }, { x: 9, y: 4 }, { x: 9, y: 5 }, { x: 9, y: 6 } ] ),
-			new CustomBlock( [ { x: 7, y: 8 }, { x: 8, y: 8 }, { x: 8, y: 9 } ] ),
-			new CustomBlock( [ { x: 1, y: 9 }, { x: 3, y: 9 } ] ) ]
-	},
-	{
-		board: {
-			position: { x: 0, y: 0 },
-			height: 15,
-			width: 10 },
-		exit: { x: 0, y: 0 },
-		playerPosition: { x: 9, y: 9 },
-		blocks: [
-			new RectangleBlock( { x: 3, y: 4 }, 3, 1 ),
-			new CustomBlock( [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ] ),
-			new CustomBlock( [ { x: 7, y: 8 }, { x: 8, y: 8 }, { x: 8, y: 9 } ] ),
-			new CustomBlock( [ { x: 1, y: 9 }, { x: 3, y: 9 } ] ) ]
-	}
-];

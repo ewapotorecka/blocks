@@ -1,8 +1,19 @@
 {
 	"name": "blocksgame",
-
+	"scripts": {
+		"start": "webpack --mode development --watch",
+		"build": "webpack --mode development",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"lint": "eslint *.js --fix"
+	},
 	"dependencies": {
 		"eslint": "^5.16.0",
 		"eslint-config-ckeditor5": "^1.0.14"
+	},
+	"devDependencies": {
+		"webpack": "^4.35.0",
+		"webpack-cli": "^3.3.5"
 	}
+	
 }
+ 

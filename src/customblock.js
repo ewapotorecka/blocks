@@ -1,9 +1,10 @@
-class CustomBlock {
+
+export class CustomBlock {
 	constructor( positions ) {
 		this.positions = positions;
 	}
 
-	draw( ctx, color ) {
+	draw( ctx, color, tileSize ) {
 		for ( const position of this.positions ) {
 			ctx.fillStyle = color;
 			ctx.fillRect( position.x * tileSize, position.y * tileSize, tileSize, tileSize );
@@ -14,7 +15,7 @@ class CustomBlock {
 		return this.positions;
 	}
 
-	updatePositon( moveVector ) {
+	updatePosition( moveVector ) {
 		for ( const position of this.positions ) {
 			position.x += moveVector.x;
 			position.y += moveVector.y;
