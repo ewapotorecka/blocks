@@ -11,7 +11,7 @@ export class CustomBlock {
 		}
 	}
 
-	get partialPosition() {
+	get partialPositions() {
 		return this.positions;
 	}
 

@@ -4,6 +4,24 @@ import { CustomBlock } from './customblock';
 export const levels = [
 	{
 		board: {
+			height: 10,
+			width: 10 },
+		exit: { x: 0, y: 0 },
+		playerPosition: { x: 9, y: 9 },
+		blocks: [
+			{
+				type: 'rectangle',
+				position: { x: 3, y: 4 },
+				width: 3,
+				height: 1
+			},
+			{
+				type: 'custom',
+				points: [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ]
+			} ]
+	},
+	{
+		board: {
 			height: 20,
 			width: 10 },
 		exit: { x: 0, y: 0 },

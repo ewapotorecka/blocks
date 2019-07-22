@@ -1,4 +1,5 @@
-
+import { RectangleBlock } from './rectangleblock';
+import { CustomBlock } from './customblock';
 
 export class Scene {
 	constructor( levelData ) {
@@ -6,17 +7,25 @@ export class Scene {
 	}
 
 	setLevelData( level ) {
-		// level = JSON.parse( JSON.stringify( level ) );
 		// TODO: All these things should be private and be available only from this class.
-		// TODO: All these things should be cloned to not change original objects later.
+
+		level = JSON.parse( JSON.stringify( level ) );
+
+		this.blocks = this._createBlocksFromJson( level.blocks );
 		this.board = level.board;
-		this.blocks = level.blocks;
 		this.exit = level.exit;
 		this.playerPosition = level.playerPosition;
 	}
 
-	_parseBlocks( blocks ) {
-		// 
+	_createBlocksFromJson( jsonBlocks ) {
+		return jsonBlocks.map( jsonBlock => {
+			if ( jsonBlock.type == 'rectangle' ) {
+				return new RectangleBlock( jsonBlock.position, jsonBlock.width, jsonBlock.height );
+			}
+			if ( jsonBlock.type == 'custom' ) {
+				return new CustomBlock( jsonBlock.points );
+			}
+		} );
 	}
 
 	isExitAt( position ) {
@@ -25,48 +34,43 @@ export class Scene {
 
 	isEmptyAt( position ) {
 		for ( const block of this.blocks ) {
-			const blockPartialPositions = block.partialPosition;
-			for ( const partialPosition of blockPartialPositions ) {
+			for ( const partialPosition of block.partialPositions ) {
 				if ( position.x == partialPosition.x && position.y == partialPosition.y ) {
 					return false;
 				}
 			}
 		}
+
 		return true;
 	}
 
 	canBlockBeMoved( block, moveVector ) {
-		const levelData = {
-			board: this.board,
-			blocks: this.blocks.filter( blockInArr => block !== blockInArr ),
-			exit: this.exit,
-			playerPosition: this.playerPosition,
-		};
+		const previousBlocks = this.blocks.slice();
+		this.blocks = this.blocks.filter( blockInArr => block !== blockInArr );
 
-		const sceneWithoutMovedBlock = new Scene( levelData );
-		const blockPartialPositions = block.partialPosition;
-
-		for ( const partialPosition of blockPartialPositions ) {
+		for ( const partialPosition of block.partialPositions ) {
 			const newPosition = {
 				x: partialPosition.x + moveVector.x,
 				y: partialPosition.y + moveVector.y
 			};
 
-			if ( !sceneWithoutMovedBlock.isPositionOnBoard( newPosition ) ) {
+			if ( !this.isPositionOnBoard( newPosition ) ) {
+				this.blocks = previousBlocks;
 				return false;
 			}
 
-			if ( !sceneWithoutMovedBlock.isEmptyAt( newPosition ) ) {
+			if ( !this.isEmptyAt( newPosition ) ) {
+				this.blocks = previousBlocks;
 				return false;
 			}
 		}
-
+		this.blocks = previousBlocks;
 		return true;
 	}
 
 	findBlock( position ) {
 		for ( const block of this.blocks ) {
-			for ( const partialPosition of block.partialPosition ) {
+			for ( const partialPosition of block.partialPositions ) {
 				if ( position.x == partialPosition.x && position.y == partialPosition.y ) {
 					return block;
 				}

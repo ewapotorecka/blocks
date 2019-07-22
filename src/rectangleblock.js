@@ -11,7 +11,7 @@ export class RectangleBlock {
 		ctx.fillRect( this.position.x * tileSize, this.position.y * tileSize, this.width * tileSize, this.height * tileSize );
 	}
 
-	get partialPosition() {
+	get partialPositions() {
 		const blockPartialPositions = [];
 
 		for ( let i = 0; i < this.height; i++ ) {
