@@ -45,6 +45,7 @@ export class Scene {
 	}
 
 	canBlockBeMoved( block, moveVector ) {
+		let canBlockBeMoved = true;
 		const previousBlocks = this.blocks.slice();
 		this.blocks = this.blocks.filter( blockInArr => block !== blockInArr );
 
@@ -55,17 +56,15 @@ export class Scene {
 			};
 
 			if ( !this.isPositionOnBoard( newPosition ) ) {
-				this.blocks = previousBlocks;
-				return false;
+				canBlockBeMoved = false;
 			}
 
 			if ( !this.isEmptyAt( newPosition ) ) {
-				this.blocks = previousBlocks;
-				return false;
+				canBlockBeMoved = false;
 			}
 		}
 		this.blocks = previousBlocks;
-		return true;
+		return canBlockBeMoved;
 	}
 
 	findBlock( position ) {
