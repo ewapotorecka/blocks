@@ -1,14 +1,14 @@
 import { RectangleBlock } from './rectangleblock';
 import { CustomBlock } from './customblock';
+import { Emitter } from './emitter';
 
 export class Scene {
 	constructor( levelData ) {
 		this.setLevelData( levelData );
+		this.levelChangeEmitter = new Emitter();
 	}
 
 	setLevelData( level ) {
-		// TODO: All these things should be private and be available only from this class.
-
 		level = JSON.parse( JSON.stringify( level ) );
 
 		this.blocks = this._createBlocksFromJson( level.blocks );
@@ -84,6 +84,35 @@ export class Scene {
 			position.x >= 0 &&
 			position.y >= 0
 		);
+	}
+
+	move( moveVector ) {
+		const newPosition = {
+			x: this.playerPosition.x + moveVector.x,
+			y: this.playerPosition.y + moveVector.y
+		};
+
+		if ( !this.isPositionOnBoard( newPosition ) ) {
+			return;
+		}
+
+		if ( this.isExitAt( newPosition ) ) {
+			this.playerPosition = newPosition;
+			this.levelChangeEmitter.emit();
+
+			return;
+		}
+
+		if ( this.isEmptyAt( newPosition ) ) {
+			this.playerPosition = newPosition;
+		} else {
+			const block = this.findBlock( newPosition );
+
+			if ( this.canBlockBeMoved( block, moveVector ) ) {
+				this.playerPosition = newPosition;
+				block.updatePosition( moveVector );
+			}
+		}
 	}
 }
 

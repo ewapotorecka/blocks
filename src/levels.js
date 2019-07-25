@@ -27,13 +27,37 @@ export const levels = [
 		exit: { x: 0, y: 0 },
 		playerPosition: { x: 9, y: 9 },
 		blocks: [
-			new RectangleBlock( { x: 3, y: 4 }, 3, 1 ),
-			new CustomBlock( [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ] ),
-			new CustomBlock( [ { x: 5, y: 1 }, { x: 5, y: 2 }, { x: 5, y: 3 }, { x: 4, y: 3 } ] ),
-			new CustomBlock( [ { x: 8, y: 5 }, { x: 8, y: 6 }, { x: 8, y: 7 }, { x: 7, y: 7 }, { x: 7, y: 5 } ] ),
-			new CustomBlock( [ { x: 7, y: 4 }, { x: 8, y: 4 }, { x: 9, y: 4 }, { x: 9, y: 5 }, { x: 9, y: 6 } ] ),
-			new CustomBlock( [ { x: 7, y: 8 }, { x: 8, y: 8 }, { x: 8, y: 9 } ] ),
-			new CustomBlock( [ { x: 1, y: 9 }, { x: 3, y: 9 } ] ) ]
+			{
+				type: 'rectangle',
+				position: { x: 3, y: 4 },
+				width: 3,
+				height: 1
+			},
+			{
+				type: 'custom',
+				points: [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ]
+			},
+			{
+				type: 'custom',
+				points: [ { x: 5, y: 1 }, { x: 5, y: 2 }, { x: 5, y: 3 }, { x: 4, y: 3 } ]
+			},
+			{
+				type: 'custom',
+				points: [ { x: 8, y: 5 }, { x: 8, y: 6 }, { x: 8, y: 7 }, { x: 7, y: 7 }, { x: 7, y: 5 } ]
+			},
+			{
+				type: 'custom',
+				points: [ { x: 7, y: 4 }, { x: 8, y: 4 }, { x: 9, y: 4 }, { x: 9, y: 5 }, { x: 9, y: 6 } ]
+			},
+			{
+				type: 'custom',
+				points: [ { x: 7, y: 8 }, { x: 8, y: 8 }, { x: 8, y: 9 } ]
+			},
+			{
+				type: 'custom',
+				points: [ { x: 1, y: 9 }, { x: 3, y: 9 } ]
+			}
+		]
 	},
 	{
 		board: {
@@ -42,10 +66,25 @@ export const levels = [
 		exit: { x: 0, y: 0 },
 		playerPosition: { x: 9, y: 9 },
 		blocks: [
-			new RectangleBlock( { x: 3, y: 4 }, 3, 1 ),
-			new CustomBlock( [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ] ),
-			new CustomBlock( [ { x: 7, y: 8 }, { x: 8, y: 8 }, { x: 8, y: 9 } ] ),
-			new CustomBlock( [ { x: 1, y: 9 }, { x: 3, y: 9 } ] ) ]
+			{
+				type: 'rectangle',
+				position: { x: 3, y: 4 },
+				width: 3,
+				height:1
+			},
+			{
+				type: 'custom',
+				points: [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ]
+			},
+			{
+				type: 'custom',
+				points: [ { x: 7, y: 8 }, { x: 8, y: 8 }, { x: 8, y: 9 } ]
+			},
+			{
+				type: 'custom',
+				points: [ { x: 1, y: 9 }, { x: 3, y: 9 } ]
+			}
+		]
 	},
 	{
 		board: {

@@ -8,14 +8,18 @@ export class Game {
 		this.levelNum = 0;
 		const levelData = levels[ this.levelNum ];
 		this.scene = new Scene( levelData );
-
 		const canvas = document.getElementById( 'blocksBoard' );
 		this.ctx = canvas.getContext( '2d' );
+		this.levelInfo = document.getElementById( 'level' );
 
 		this.renderer = new Renderer( this.ctx, this.scene );
 		this.renderer.resizeBoard();
 		this.renderer.renderBoard();
 		this.handleKeyboard();
+
+		this.scene.levelChangeEmitter.subscribe( () => this.loadNextLevel() );
+
+		this.levelInfo.innerText = `Level ${ this.levelNum + 1 } `;
 
 		window.addEventListener( 'resize', () => {
 			this.renderer.resizeBoard();
@@ -35,51 +39,22 @@ export class Game {
 		this.scene.setLevelData( level );
 		this.renderer.resizeBoard();
 		this.renderer.renderBoard();
-	}
+		this.levelInfo.innerText = `Level ${ this.levelNum + 1 } `;
 
-	move( moveVector ) {
-		const newPosition = {
-			x: this.scene.playerPosition.x + moveVector.x,
-			y: this.scene.playerPosition.y + moveVector.y
-		};
-
-		if ( !this.scene.isPositionOnBoard( newPosition ) ) {
-			return;
-		}
-
-		if ( this.scene.isExitAt( newPosition ) ) {
-			this.scene.playerPosition = newPosition;
-			this.loadNextLevel();
-			return;
-		}
-
-		if ( this.scene.isEmptyAt( newPosition ) ) {
-			this.scene.playerPosition = newPosition;
-		} else {
-			const block = this.scene.findBlock( newPosition );
-
-			if ( this.scene.canBlockBeMoved( block, moveVector ) ) {
-				this.scene.playerPosition = newPosition;
-				block.updatePosition( moveVector );
-			}
-		}
 	}
 
 	handleKeyboard() {
 		document.addEventListener( 'keyup', event => {
 			if ( event.key === 'ArrowUp' ) {
-				this.move( { x: 0, y: -1 } );
-				this.renderer.renderBoard();
+				this.scene.move( { x: 0, y: -1 } );
 			} else if ( event.key === 'ArrowDown' ) {
-				this.move( { x: 0, y: 1 } );
-				this.renderer.renderBoard();
+				this.scene.move( { x: 0, y: 1 } );
 			} else if ( event.key === 'ArrowLeft' ) {
-				this.move( { x: -1, y: 0 } );
-				this.renderer.renderBoard();
+				this.scene.move( { x: -1, y: 0 } );
 			} else if ( event.key === 'ArrowRight' ) {
-				this.move( { x: 1, y: 0 } );
-				this.renderer.renderBoard();
+				this.scene.move( { x: 1, y: 0 } );
 			}
+			this.renderer.renderBoard();
 		} );
 	}
 }
