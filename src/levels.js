@@ -1,5 +1,3 @@
-import { RectangleBlock } from './rectangleblock';
-import { CustomBlock } from './customblock';
 
 export const levels = [
 	{
@@ -18,7 +16,8 @@ export const levels = [
 			{
 				type: 'custom',
 				points: [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ]
-			} ]
+			} ],
+		id: 1
 	},
 	{
 		board: {
@@ -57,7 +56,8 @@ export const levels = [
 				type: 'custom',
 				points: [ { x: 1, y: 9 }, { x: 3, y: 9 } ]
 			}
-		]
+		],
+		id: 2
 	},
 	{
 		board: {
@@ -70,7 +70,7 @@ export const levels = [
 				type: 'rectangle',
 				position: { x: 3, y: 4 },
 				width: 3,
-				height:1
+				height: 1
 			},
 			{
 				type: 'custom',
@@ -84,7 +84,8 @@ export const levels = [
 				type: 'custom',
 				points: [ { x: 1, y: 9 }, { x: 3, y: 9 } ]
 			}
-		]
+		],
+		id: 3
 	},
 	{
 		board: {
@@ -93,14 +94,44 @@ export const levels = [
 		exit: { x: 0, y: 0 },
 		playerPosition: { x: 8, y: 7 },
 		blocks: [
-			new RectangleBlock( { x: 2, y: 1 }, 6, 1 ),
-			new RectangleBlock( { x: 2, y: 3 }, 6, 1 ),
-			new RectangleBlock( { x: 2, y: 5 }, 6, 1 ),
-			new CustomBlock( [ { x: 2, y: 0 }, { x: 2, y: 2 }, { x: 2, y: 4 }, { x: 2, y: 6 }, ] ),
-			new RectangleBlock( { x: 1, y: 7 }, 5, 1 ),
-			new CustomBlock( [ { x: 0, y: 2 } ] ),
-			new CustomBlock( [ { x: 4, y: 0 } ] ),
-		]
+			{
+				type: 'rectangle',
+				position: { x: 2, y: 1 },
+				width: 6,
+				height: 1
+			},
+			{
+				type: 'rectangle',
+				position: { x: 2, y: 3 },
+				width: 6,
+				height: 1
+			},
+			{
+				type: 'rectangle',
+				position: { x: 2, y: 5 },
+				width: 6,
+				height: 1
+			},
+			{
+				type: 'custom',
+				points: [ { x: 2, y: 0 }, { x: 2, y: 2 }, { x: 2, y: 4 }, { x: 2, y: 6 }, ]
+			},
+			{
+				type: 'rectangle',
+				position: { x: 1, y: 7 },
+				width: 5,
+				height: 1
+			},
+			{
+				type: 'custom',
+				points: [ { x: 0, y: 2 } ]
+			},
+			{
+				type: 'custom',
+				points: [ { x: 4, y: 0 } ]
+			}
+		],
+		id: 4
 	},
 	{
 		board: {
@@ -110,20 +141,76 @@ export const levels = [
 		exit: { x: 4, y: 4 },
 		playerPosition: { x: 6, y: 6 },
 		blocks: [
-			new CustomBlock( [ { x: 3, y: 3 }, { x: 3, y: 5 }, { x: 5, y: 5 }, { x: 5, y: 3 } ] ),
-			new RectangleBlock( { x: 2, y: 3 }, 1, 3 ),
-			new RectangleBlock( { x: 3, y: 2 }, 3, 1 ),
-			new RectangleBlock( { x: 6, y: 3 }, 1, 3 ),
-			new RectangleBlock( { x: 3, y: 6 }, 3, 1 ),
-			new CustomBlock( [ { x: 7, y: 7 }, { x: 3, y: 4 } ] ),
-			new CustomBlock( [ { x: 1, y: 1 }, { x: 4, y: 3 } ] ),
-			new CustomBlock( [ { x: 1, y: 7 }, { x: 5, y: 4 } ] ),
-			new CustomBlock( [ { x: 7, y: 1 }, { x: 4, y: 5 } ] ),
-			new RectangleBlock( { x: 4, y: 0 }, 1, 2 ),
-			new RectangleBlock( { x: 4, y: 7 }, 1, 2 ),
-			new RectangleBlock( { x: 0, y: 4 }, 2, 1 ),
-			new RectangleBlock( { x: 7, y: 4 }, 2, 1 ),
-		]
+			{
+				type: 'custom',
+				points: [ { x: 3, y: 3 }, { x: 3, y: 5 }, { x: 5, y: 5 }, { x: 5, y: 3 } ]
+			},
+			{
+				type: 'rectangle',
+				position: { x: 2, y: 3 },
+				width: 1,
+				height: 3
+			},
+			{
+				type: 'rectangle',
+				position: { x: 3, y: 2 },
+				width: 3,
+				height: 1
+			},
+			{
+				type: 'rectangle',
+				position: { x: 6, y: 3 },
+				width: 1,
+				height: 3
+			},
+			{
+				type: 'rectangle',
+				position: { x: 3, y: 6 },
+				width: 3,
+				height: 1
+			},
+			{
+				type: 'custom',
+				points: [ { x: 7, y: 7 }, { x: 3, y: 4 } ]
+			},
+			{
+				type: 'custom',
+				points: [ { x: 1, y: 1 }, { x: 4, y: 3 } ]
+			},
+			{
+				type: 'custom',
+				points: [ { x: 1, y: 7 }, { x: 5, y: 4 } ]
+			},
+			{
+				type: 'custom',
+				points: [ { x: 7, y: 1 }, { x: 4, y: 5 } ]
+			},
+			{
+				type: 'rectangle',
+				position: { x: 4, y: 0 },
+				width: 1,
+				height: 2
+			},
+			{
+				type: 'rectangle',
+				position: { x: 4, y: 7 },
+				width: 1,
+				height: 2
+			},
+			{
+				type: 'rectangle',
+				position: { x: 0, y: 4 },
+				width: 2,
+				height: 1
+			},
+			{
+				type: 'rectangle',
+				position: { x: 7, y: 4 },
+				width: 2,
+				height: 1
+			}
+		],
+		id: 5
 	},
 	{
 		board: {
@@ -133,14 +220,47 @@ export const levels = [
 		exit: { x: 0, y: 0 },
 		playerPosition: { x: 8, y: 7 },
 		blocks: [
-			new RectangleBlock( { x: 2, y: 1 }, 6, 1 ),
-			new RectangleBlock( { x: 2, y: 3 }, 6, 1 ),
-			new RectangleBlock( { x: 2, y: 5 }, 6, 1 ),
-			new CustomBlock( [ { x: 2, y: 0 }, { x: 2, y: 2 }, { x: 2, y: 4 }, { x: 2, y: 6 }, ] ),
-			new RectangleBlock( { x: 1, y: 7 }, 5, 1 ),
-			new CustomBlock( [ { x: 0, y: 2 } ] ),
-			new CustomBlock( [ { x: 4, y: 0 } ] ),
-			new CustomBlock( [ { x: 1, y: 1 }, { x: 6, y: 6 } ] ),
-		]
+			{
+				type: 'rectangle',
+				position: { x: 2, y: 1 },
+				width: 6,
+				height: 1
+			},
+			{
+				type: 'rectangle',
+				position: { x: 2, y: 3 },
+				width: 6,
+				height: 1
+			},
+			{
+				type: 'rectangle',
+				position: { x: 2, y: 5 },
+				width: 6,
+				height: 1
+			},
+			{
+				type: 'custom',
+				points: [ { x: 2, y: 0 }, { x: 2, y: 2 }, { x: 2, y: 4 }, { x: 2, y: 6 }, ]
+			},
+			{
+				type: 'rectangle',
+				position: { x: 1, y: 7 },
+				width: 5,
+				height: 1
+			},
+			{
+				type: 'custom',
+				points: [ { x: 0, y: 2 } ]
+			},
+			{
+				type: 'custom',
+				points: [ { x: 4, y: 0 } ]
+			},
+			{
+				type: 'custom',
+				points: [ { x: 1, y: 1 }, { x: 6, y: 6 } ]
+			}
+		],
+		id: 6
 	}
 ];

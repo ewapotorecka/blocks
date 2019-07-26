@@ -11,6 +11,7 @@ export class Game {
 		const canvas = document.getElementById( 'blocksBoard' );
 		this.ctx = canvas.getContext( '2d' );
 		this.levelInfo = document.getElementById( 'level' );
+		this.levelList = document.getElementById( 'level-list' );
 
 		this.renderer = new Renderer( this.ctx, this.scene );
 		this.renderer.resizeBoard();
@@ -20,6 +21,12 @@ export class Game {
 		this.scene.levelChangeEmitter.subscribe( () => this.loadNextLevel() );
 
 		this.levelInfo.innerText = `Level ${ this.levelNum + 1 } `;
+		for ( let i = levels.length - 1; i >= 0; i-- ) {
+			const button = document.createElement( 'BUTTON' );
+			this.levelList.appendChild( button );
+			button.innerText = levels[ i ].id;
+			button.setAttribute( 'id', levels[ i ].id );
+		}
 
 		window.addEventListener( 'resize', () => {
 			this.renderer.resizeBoard();
