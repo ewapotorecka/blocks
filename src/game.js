@@ -41,18 +41,27 @@ export class Game {
 	}
 
 	loadNextLevel() {
-		const num = this.levelNum + 1;
+		let num = this.levelNum + 1;
+		if ( this.levelsInfo[ num ] == levelStates.DONE ) {
+			num++;
+		}
 
 		this.loadLevel( num );
 	}
 
 	loadLevel( id ) {
+		const previousLevel = this.levelNum;
 		this.levelNum = id;
 		const level = levels[ this.levelNum ];
 		this.scene.setLevelData( level );
 		this.renderer.resizeBoard();
 		this.renderer.renderBoard();
-		this.levelChangeEmitter.emit();
+		this.levelChangeEmitter.emit( { previousLevel, currentLevel: id } );
+	}
+
+	skipCurrentLevel() {
+		this.levelsInfo[ this.levelNum ] = levelStates.SKIPPED;
+		this.loadNextLevel();
 	}
 
 	handleKeyboard() {

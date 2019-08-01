@@ -7,15 +7,19 @@ export class Menu {
 		const levelInfo = document.getElementById( 'level' );
 		const levelList = document.getElementById( 'level-list' );
 
-		game.levelChangeEmitter.subscribe( () => {
-			levelInfo.innerText = `Level ${ game.levelNum + 1 } `;
-			levelList.children[ game.levelNum ].style.backgroundColor = '#950740';
-			levelList.children[ game.levelNum ].style.color = '#FFF';
+		game.levelChangeEmitter.subscribe( ( { previousLevel, currentLevel } ) => {
+			levelInfo.innerText = `Level ${ currentLevel + 1 } `;
+			if ( game.levelsInfo[ previousLevel ] == levelStates.SKIPPED ) {
+				levelList.children[ previousLevel ].style.backgroundColor = '#950740';
+				levelList.children[ previousLevel ].style.color = '#FFF';
+			} else if ( game.levelsInfo[ previousLevel ] == levelStates.DONE ) {
+				levelList.children[ previousLevel ].style.backgroundColor = '#123C69';
+				levelList.children[ previousLevel ].style.color = '#FFF';
+			}
 		} );
 
 		skipLevelButton.addEventListener( 'click', () => {
-			game.levelsInfo[ game.levelNum ] = levelStates.SKIPPED;
-			game.loadNextLevel();
+			game.skipCurrentLevel();
 		} );
 		resetButton.addEventListener( 'click', () => game.loadLevel( game.levelNum ) );
 

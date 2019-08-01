@@ -5,9 +5,9 @@ export class Emitter {
 	subscribe( fn ) {
 		this.functions.push( fn );
 	}
-	emit() {
+	emit( arg ) {
 		for ( const fn of this.functions ) {
-			fn();
+			fn( arg );
 		}
 	}
 }
