@@ -1,3 +1,4 @@
+import { levelStates } from './game';
 
 export class Menu {
 	constructor( game ) {
@@ -6,21 +7,33 @@ export class Menu {
 		const levelInfo = document.getElementById( 'level' );
 		const levelList = document.getElementById( 'level-list' );
 
-		game.nextLevelEmitter.subscribe( () => {
+		game.levelChangeEmitter.subscribe( () => {
 			levelInfo.innerText = `Level ${ game.levelNum + 1 } `;
+			levelList.children[ game.levelNum ].style.backgroundColor = '#950740';
+			levelList.children[ game.levelNum ].style.color = '#FFF';
 		} );
 
-		skipLevelButton.addEventListener( 'click', () => game.loadNextLevel() );
-		resetButton.addEventListener( 'click', () => game.start() );
+		skipLevelButton.addEventListener( 'click', () => {
+			game.levelsInfo[ game.levelNum ] = levelStates.SKIPPED;
+			game.loadNextLevel();
+		} );
+		resetButton.addEventListener( 'click', () => game.loadLevel( game.levelNum ) );
 
 		levelInfo.innerText = `Level ${ game.levelNum + 1 } `;
-		for ( let i = game.levels.length - 1; i >= 0; i-- ) {
+
+		for ( let i = 0; i <= game.levels.length; i++ ) {
 			const button = document.createElement( 'BUTTON' );
 			levelList.appendChild( button );
-			button.innerText = game.levels[ i ].id;
-			button.setAttribute( 'id', game.levels[ i ].id );
+			button.innerText = i + 1;
+			button.addEventListener( 'click', () => {
+				if ( game.levelsInfo[ i ] == 2 || game.levelsInfo[ i ] == 0 ) {
+					game.loadLevel( i );
+				}
+			} );
 		}
-
 	}
 
+	renderLevelButtons() {
+		
+	}
 }

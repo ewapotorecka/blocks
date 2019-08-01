@@ -11,25 +11,3 @@ export class Emitter {
 		}
 	}
 }
-
-// class Scene {
-// 	constructor() {
-// 		this.changeEmitter = new Emitter();
-// 	}
-
-// 	move() {
-// 		this.changeEmitter.emit();
-// 	}
-// }
-
-// class Game {
-// 	constructor() {
-// 		this.scene = new Scene();
-
-// 		this.scene.changeEmitter.subscribe( () => {
-// 			console.log( this.scene );
-// 		} );
-
-// 		this.scene.move();
-// 	}
-// }

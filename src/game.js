@@ -4,10 +4,18 @@ import { levels } from './levels';
 import { Renderer } from './renderer';
 import { Emitter } from './emitter';
 
+export const levelStates = {
+	UNDONE: 0,
+	DONE: 1,
+	SKIPPED: 2
+}
+
 export class Game {
 	constructor() {
-		this.nextLevelEmitter = new Emitter();
+		this.levelChangeEmitter = new Emitter();
+		this.levelsInfo = levels.map( () => levelStates.UNDONE );
 	}
+
 	start() {
 		this.levelNum = 0;
 		const levelData = levels[ this.levelNum ];
@@ -21,7 +29,10 @@ export class Game {
 		this.renderer.renderBoard();
 		this.handleKeyboard();
 
-		this.scene.levelChangeEmitter.subscribe( () => this.loadNextLevel() );
+		this.scene.levelChangeEmitter.subscribe( () => {
+			this.levelsInfo[ this.levelNum ] = levelStates.DONE;
+			this.loadNextLevel();
+		} );
 
 		window.addEventListener( 'resize', () => {
 			this.renderer.resizeBoard();
@@ -41,7 +52,7 @@ export class Game {
 		this.scene.setLevelData( level );
 		this.renderer.resizeBoard();
 		this.renderer.renderBoard();
-		this.nextLevelEmitter.emit();
+		this.levelChangeEmitter.emit();
 	}
 
 	handleKeyboard() {
