@@ -6,91 +6,88 @@ import { Emitter } from './emitter';
 import { Level } from './common';
 
 export const enum levelStates {
-	UNDONE = 0,
-	DONE = 1,
-	SKIPPED = 2
+    UNDONE = 0,
+    DONE = 1,
+    SKIPPED = 2
 }
 
 export class Game {
-	public levelChangeEmitter: Emitter<{ previousLevel: number; currentLevel: number }>;
-	public levelsInfo: levelStates[];
-	public levelNum!: number;
-	public levels!: Level[];
-	private scene!: Scene;
-	private ctx!: CanvasRenderingContext2D;
-	private renderer!: Renderer;
+    public levelChangeEmitter = new Emitter();
+    public levelsInfo: levelStates[];
+    public levelNum: number;
+    public levels: Level[];
+    private scene: Scene;
+    private renderer: Renderer;
 
-	constructor() {
-		this.levelChangeEmitter = new Emitter();
+    constructor( canvas: HTMLCanvasElement, levels: Level[] ) {
 		this.levelsInfo = levels.map( () => levelStates.UNDONE );
-	}
-
-	start() {
 		this.levelNum = 0;
-		const levelData = levels[ this.levelNum ];
+        const levelData = levels[ this.levelNum ];
 		this.levels = levels;
 		this.scene = new Scene( levelData );
-		const canvas = document.getElementById( 'blocksBoard' ) as HTMLCanvasElement;
-		const ctx = canvas.getContext( '2d' );
+        const ctx = canvas.getContext( '2d' );
 
-		if ( ctx == null ) {
-			throw new Error( 'Canvas is not supported' );
-		}
-		this.ctx = ctx;
-
-		this.renderer = new Renderer( this.ctx, this.scene );
-		this.renderer.resizeBoard();
-		this.renderer.renderBoard();
-		this.handleKeyboard();
-
-		this.scene.levelChangeEmitter.subscribe( () => {
-			this.levelsInfo[ this.levelNum ] = levelStates.DONE;
-			this.loadNextLevel();
-		} );
-
-		window.addEventListener( 'resize', () => {
-			this.renderer.resizeBoard();
-			this.renderer.renderBoard();
-		} );
-	}
-
-	loadNextLevel() {
-		let num = this.levelNum + 1;
-		if ( this.levelsInfo[ num ] == levelStates.DONE ) {
-			num++;
+        if ( ctx == null ) {
+            throw new Error( 'Canvas is not supported' );
 		}
 
-		this.loadLevel( num );
-	}
+		this.renderer = new Renderer( ctx, this.scene );
+    }
 
-	loadLevel( id: number ) {
-		const previousLevel = this.levelNum;
-		this.levelNum = id;
-		const level = levels[ this.levelNum ];
-		this.scene.setLevelData( level );
-		this.renderer.resizeBoard();
-		this.renderer.renderBoard();
-		this.levelChangeEmitter.emit( { previousLevel, currentLevel: id } );
-	}
+    start() {
+        this.renderer.resizeBoard();
+        this.renderer.renderBoard();
+        this.handleKeyboard();
 
-	skipCurrentLevel() {
-		this.levelsInfo[ this.levelNum ] = levelStates.SKIPPED;
-		this.loadNextLevel();
-	}
+        this.scene.levelChangeEmitter.subscribe( () => {
+            this.levelsInfo[ this.levelNum ] = levelStates.DONE;
+            this.loadNextLevel();
+        } );
 
-	handleKeyboard() {
-		document.addEventListener( 'keyup', event => {
-			if ( event.key === 'ArrowUp' ) {
-				this.scene.move( { x: 0, y: -1 } );
-			} else if ( event.key === 'ArrowDown' ) {
-				this.scene.move( { x: 0, y: 1 } );
-			} else if ( event.key === 'ArrowLeft' ) {
-				this.scene.move( { x: -1, y: 0 } );
-			} else if ( event.key === 'ArrowRight' ) {
-				this.scene.move( { x: 1, y: 0 } );
-			}
-			this.renderer.renderBoard();
+        window.addEventListener( 'resize', () => {
+            this.renderer.resizeBoard();
+            this.renderer.renderBoard();
 		} );
-	}
+		
+		this.levelChangeEmitter.emit();
+    }
+
+    public loadNextLevel() {
+        let num = this.levelNum + 1;
+        if ( this.levelsInfo[ num ] == levelStates.DONE ) {
+            num++;
+        }
+
+        this.loadLevel( num );
+    }
+
+    public loadLevel( id: number ) {
+        this.levelNum = id;
+        const level = levels[ this.levelNum ];
+        this.scene.setLevelData( level );
+        this.renderer.resizeBoard();
+        this.renderer.renderBoard();
+        this.levelChangeEmitter.emit();
+    }
+
+    public skipCurrentLevel() {
+        this.levelsInfo[ this.levelNum ] = levelStates.SKIPPED;
+        this.loadNextLevel();
+    }
+
+    private handleKeyboard() {
+        document.addEventListener( 'keyup', event => {
+            if ( event.key === 'ArrowUp' ) {
+                this.scene.move( { x: 0, y: -1 } );
+            } else if ( event.key === 'ArrowDown' ) {
+                this.scene.move( { x: 0, y: 1 } );
+            } else if ( event.key === 'ArrowLeft' ) {
+                this.scene.move( { x: -1, y: 0 } );
+            } else if ( event.key === 'ArrowRight' ) {
+                this.scene.move( { x: 1, y: 0 } );
+            }
+            this.renderer.renderBoard();
+        } );
+    }
 }
 

@@ -8,56 +8,36 @@
 	<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
 	<title>Blocks Game</title>
 	<style>
+		body {
+			background-color: #F1E9DA;
+			margin: 0;
+		}
+
 		canvas {
 			padding-left: 0;
 			padding-right: 0;
-			margin-left: 350px;
+			margin-left: 400px;
 			margin-right: auto;
 			display: block;
-			background-color: #25274D;
-		}
-
-		body {
-			background-color: #AAABB8;
-			margin: 0;
+			background-color: #541388;
 		}
 
 		#instruction {
 			position: absolute;
-			left: -300px;
-			border-style: solid;
-			border-color: #E64398;
+			/* border-style: solid;
+			border-color: #D90368; */
 			width: 340px;
 			text-align: center;
 			font-family: Oswald;
-			background-color: white;
+			color: white;
+			background-color: #D90368;
 			cursor: pointer;
 			transition: 0.3s all ease-in-out;
-
+			padding: 5px;
 		}
 
-		#instruction.active {
-			left: 0px;
-		}
-
-		#instruction > button {
-			float: right;
-			background: transparent;
-			border: none;
-			outline: none;
-			cursor: pointer;
-
-		}
-
-		#instruction > button svg {
-			height: 30px;
-			width: 30px;
-			padding: 15px 0;
-			transition: 0.3s all ease-in-out;
-		}
-
-		#instruction.active button svg {
-			transform: rotate(180deg);
+		#level-list button {
+			display: block;
 		}
 
 		#skip-level {
@@ -73,20 +53,13 @@
 
 <body>
 	<div id="instruction">
-		<button>
-			<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129"
-				xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">
-				<g>
-					<path
-						d="m40.4,121.3c-0.8,0.8-1.8,1.2-2.9,1.2s-2.1-0.4-2.9-1.2c-1.6-1.6-1.6-4.2 0-5.8l51-51-51-51c-1.6-1.6-1.6-4.2 0-5.8 1.6-1.6 4.2-1.6 5.8,0l53.9,53.9c1.6,1.6 1.6,4.2 0,5.8l-53.9,53.9z" />
-				</g>
-			</svg>
-		</button>
 		<div>Get to the exit.</div>
 		<div>You can move one block at a time by pushing it.</div>
-		<div id="level"></div>
-		<button id="skip-level">Skip level</button>
-		<button id="reset">Reset</button>
+	
+		<div>
+			<button id="skip-level">Skip level</button>
+			<button id="reset">Reset</button>
+		</div>
 		<div id="level-list"></div>
 
 	</div>
@@ -94,12 +67,6 @@
 		<canvas id="blocksBoard"></canvas>
 	</div>
 	<script src="dist/main.js"></script>
-	<script>
-		const instructionContainer = document.getElementById( 'instruction' );
-		instructionContainer.addEventListener( 'click', () => {
-			instructionContainer.classList.toggle( 'active' );
-		} );
-	</script>
 </body>
 
 </html>

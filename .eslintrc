@@ -1,9 +1,17 @@
 {
-	"extends": [ "ckeditor5" ],
+	"parser": "@typescript-eslint/parser",
+	"extends": [
+		"ckeditor5",
+		"plugin:@typescript-eslint/recommended"
+	],
 	"parserOptions": {
-		"ecmaVersion": 2018
+		"ecmaVersion": 2018,
+		"sourceType": "module",
 	},
 	"env": {
 		"browser": true
+	},
+	"rules": {
+		
 	}
 }

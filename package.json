@@ -4,17 +4,22 @@
 		"start": "webpack --mode development --watch",
 		"build": "webpack --mode development",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"lint": "eslint src/**/*.js --fix"
+		"lint": "eslint src/**/*.ts --fix"
 	},
 	"dependencies": {
 		"awesome-typescript-loader": "^5.2.1",
 		"eslint": "^5.16.0",
-		"eslint-config-ckeditor5": "^1.0.14",
+		"eslint-config-ckeditor5": "^2.0.0",
 		"source-map-loader": "^0.2.4",
 		"typescript": "^3.5.3"
 	},
 	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^1.13.0",
+		"@typescript-eslint/parser": "^1.13.0",
 		"webpack": "^4.35.0",
 		"webpack-cli": "^3.3.5"
-	}
+	},
+	"eslintIgnore": [
+		"dist/**"
+	]
 }
