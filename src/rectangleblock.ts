@@ -1,14 +1,13 @@
 
 export class RectangleBlock {
+	private position;
+	private width;
+	private height;
+
 	constructor( position, width, height ) {
 		this.position = position;
 		this.width = width;
 		this.height = height;
-	}
-
-	draw( ctx, color, tileSize ) {
-		ctx.fillStyle = color;
-		ctx.fillRect( this.position.x * tileSize, this.position.y * tileSize, this.width * tileSize, this.height * tileSize );
 	}
 
 	get partialPositions() {
@@ -24,6 +23,11 @@ export class RectangleBlock {
 		}
 
 		return blockPartialPositions;
+	}
+
+	draw( ctx, color, tileSize ) {
+		ctx.fillStyle = color;
+		ctx.fillRect( this.position.x * tileSize, this.position.y * tileSize, this.width * tileSize, this.height * tileSize );
 	}
 
 	updatePosition( moveVector ) {

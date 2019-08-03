@@ -1,7 +1,14 @@
+import { Position } from "./common";
 
 export class CustomBlock {
+	private positions: Position[];
+
 	constructor( positions ) {
 		this.positions = positions;
+	}
+
+	get partialPositions() {
+		return this.positions;
 	}
 
 	draw( ctx, color, tileSize ) {
@@ -9,10 +16,6 @@ export class CustomBlock {
 			ctx.fillStyle = color;
 			ctx.fillRect( position.x * tileSize, position.y * tileSize, tileSize, tileSize );
 		}
-	}
-
-	get partialPositions() {
-		return this.positions;
 	}
 
 	updatePosition( moveVector ) {

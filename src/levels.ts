@@ -16,8 +16,7 @@ export const levels = [
 			{
 				type: 'custom',
 				points: [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ]
-			} ],
-		id: 1
+			} ]
 	},
 	{
 		board: {
@@ -56,8 +55,7 @@ export const levels = [
 				type: 'custom',
 				points: [ { x: 1, y: 9 }, { x: 3, y: 9 } ]
 			}
-		],
-		id: 2
+		]
 	},
 	{
 		board: {
@@ -84,8 +82,7 @@ export const levels = [
 				type: 'custom',
 				points: [ { x: 1, y: 9 }, { x: 3, y: 9 } ]
 			}
-		],
-		id: 3
+		]
 	},
 	{
 		board: {
@@ -130,8 +127,7 @@ export const levels = [
 				type: 'custom',
 				points: [ { x: 4, y: 0 } ]
 			}
-		],
-		id: 4
+		]
 	},
 	{
 		board: {
@@ -209,8 +205,7 @@ export const levels = [
 				width: 2,
 				height: 1
 			}
-		],
-		id: 5
+		]
 	},
 	{
 		board: {
@@ -260,7 +255,6 @@ export const levels = [
 				type: 'custom',
 				points: [ { x: 1, y: 1 }, { x: 6, y: 6 } ]
 			}
-		],
-		id: 6
+		]
 	}
 ];

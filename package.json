@@ -7,8 +7,11 @@
 		"lint": "eslint src/**/*.js --fix"
 	},
 	"dependencies": {
+		"awesome-typescript-loader": "^5.2.1",
 		"eslint": "^5.16.0",
-		"eslint-config-ckeditor5": "^1.0.14"
+		"eslint-config-ckeditor5": "^1.0.14",
+		"source-map-loader": "^0.2.4",
+		"typescript": "^3.5.3"
 	},
 	"devDependencies": {
 		"webpack": "^4.35.0",

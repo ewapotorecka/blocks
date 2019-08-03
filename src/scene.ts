@@ -1,8 +1,15 @@
 import { RectangleBlock } from './rectangleblock';
 import { CustomBlock } from './customblock';
 import { Emitter } from './emitter';
+import { Rectangle, Position } from './common';
 
 export class Scene {
+	public levelChangeEmitter: Emitter<void>;
+	public blocks: Array<RectangleBlock | CustomBlock>;
+	public board: Rectangle;
+	public exit: Position;
+	public playerPosition: Position;
+
 	constructor( levelData ) {
 		this.setLevelData( levelData );
 		this.levelChangeEmitter = new Emitter();

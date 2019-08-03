@@ -8,13 +8,16 @@ export class Menu {
 		const levelList = document.getElementById( 'level-list' );
 
 		game.levelChangeEmitter.subscribe( ( { previousLevel, currentLevel } ) => {
+			const element = levelList.children[ previousLevel ] as HTMLElement;
+
 			levelInfo.innerText = `Level ${ currentLevel + 1 } `;
+
 			if ( game.levelsInfo[ previousLevel ] == levelStates.SKIPPED ) {
-				levelList.children[ previousLevel ].style.backgroundColor = '#950740';
-				levelList.children[ previousLevel ].style.color = '#FFF';
+				element.style.backgroundColor = '#950740';
+				element.style.color = '#FFF';
 			} else if ( game.levelsInfo[ previousLevel ] == levelStates.DONE ) {
-				levelList.children[ previousLevel ].style.backgroundColor = '#123C69';
-				levelList.children[ previousLevel ].style.color = '#FFF';
+				element.style.backgroundColor = '#123C69';
+				element.style.color = '#FFF';
 			}
 		} );
 
@@ -28,7 +31,7 @@ export class Menu {
 		for ( let i = 0; i <= game.levels.length; i++ ) {
 			const button = document.createElement( 'BUTTON' );
 			levelList.appendChild( button );
-			button.innerText = i + 1;
+			button.innerText = ( i + 1 ).toString();
 			button.addEventListener( 'click', () => {
 				if ( game.levelsInfo[ i ] == 2 || game.levelsInfo[ i ] == 0 ) {
 					game.loadLevel( i );

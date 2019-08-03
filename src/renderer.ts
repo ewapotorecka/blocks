@@ -1,4 +1,10 @@
+import { Scene } from "./scene";
+
 export class Renderer {
+	private _ctx: CanvasRenderingContext2D;
+	private _scene: Scene;
+	private _tileSize: number;
+
 	constructor( ctx, scene ) {
 		this._ctx = ctx;
 		this._scene = scene;

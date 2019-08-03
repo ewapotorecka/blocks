@@ -3,14 +3,23 @@ import { Scene } from './scene';
 import { levels } from './levels';
 import { Renderer } from './renderer';
 import { Emitter } from './emitter';
+import { Level } from './common';
 
-export const levelStates = {
-	UNDONE: 0,
-	DONE: 1,
-	SKIPPED: 2
+export const enum levelStates {
+	UNDONE = 0,
+	DONE = 1,
+	SKIPPED = 2
 }
 
 export class Game {
+	public levelChangeEmitter: Emitter<{ previousLevel: number; currentLevel: number }>;
+	public levelsInfo: levelStates[];
+	public levelNum: number;
+	public levels: Level[];
+	private scene: Scene;
+	private ctx: CanvasRenderingContext2D;
+	private renderer: Renderer;
+
 	constructor() {
 		this.levelChangeEmitter = new Emitter();
 		this.levelsInfo = levels.map( () => levelStates.UNDONE );
@@ -21,7 +30,7 @@ export class Game {
 		const levelData = levels[ this.levelNum ];
 		this.levels = levels;
 		this.scene = new Scene( levelData );
-		const canvas = document.getElementById( 'blocksBoard' );
+		const canvas = document.getElementById( 'blocksBoard' ) as HTMLCanvasElement;
 		this.ctx = canvas.getContext( '2d' );
 
 		this.renderer = new Renderer( this.ctx, this.scene );
@@ -79,3 +88,4 @@ export class Game {
 		} );
 	}
 }
+
