@@ -1,11 +1,11 @@
-import { levelStates } from './game';
+import { levelStates, Game } from './game';
 
 export class Menu {
-	constructor( game ) {
-		const skipLevelButton = document.getElementById( 'skip-level' );
-		const resetButton = document.getElementById( 'reset' );
-		const levelInfo = document.getElementById( 'level' );
-		const levelList = document.getElementById( 'level-list' );
+	constructor( game: Game ) {
+		const skipLevelButton = document.getElementById( 'skip-level' )!;
+		const resetButton = document.getElementById( 'reset' )!;
+		const levelInfo = document.getElementById( 'level' )!;
+		const levelList = document.getElementById( 'level-list' )!;
 
 		game.levelChangeEmitter.subscribe( ( { previousLevel, currentLevel } ) => {
 			const element = levelList.children[ previousLevel ] as HTMLElement;

@@ -3,9 +3,9 @@ import { Scene } from "./scene";
 export class Renderer {
 	private _ctx: CanvasRenderingContext2D;
 	private _scene: Scene;
-	private _tileSize: number;
+	private _tileSize!: number;
 
-	constructor( ctx, scene ) {
+	constructor( ctx: CanvasRenderingContext2D, scene: Scene ) {
 		this._ctx = ctx;
 		this._scene = scene;
 	}

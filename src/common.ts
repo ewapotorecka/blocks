@@ -15,14 +15,20 @@ export interface Level {
 	blocks: Array<CustomBlockJson | RectangleBlockJson>;
 }
 
-interface RectangleBlockJson {
-	type: string;
+export interface RectangleBlockJson {
+	type: 'rectangle';
 	position: Position;
 	width: number;
 	height: number;
 }
 
-interface CustomBlockJson {
-	type: string;
+export interface CustomBlockJson {
+	type: 'custom';
 	points: Position[];
+}
+
+export interface Block {
+	partialPositions: Position[];
+	draw( ctx: CanvasRenderingContext2D, color: string, tileSize: number ): void;
+	updatePosition( moveVector: Position ): void;
 }

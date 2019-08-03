@@ -1,21 +1,22 @@
+
+import { Emitter } from './emitter';
+import { Rectangle, Position, RectangleBlockJson, CustomBlockJson, Block, Level } from './common';
 import { RectangleBlock } from './rectangleblock';
 import { CustomBlock } from './customblock';
-import { Emitter } from './emitter';
-import { Rectangle, Position } from './common';
 
 export class Scene {
 	public levelChangeEmitter: Emitter<void>;
-	public blocks: Array<RectangleBlock | CustomBlock>;
-	public board: Rectangle;
-	public exit: Position;
-	public playerPosition: Position;
+	public blocks!: Array<Block>;
+	public board!: Rectangle;
+	public exit!: Position;
+	public playerPosition!: Position;
 
-	constructor( levelData ) {
+	constructor( levelData: Level ) {
 		this.setLevelData( levelData );
 		this.levelChangeEmitter = new Emitter();
 	}
 
-	setLevelData( level ) {
+	setLevelData( level: Level ) {
 		level = JSON.parse( JSON.stringify( level ) );
 
 		this.blocks = this._createBlocksFromJson( level.blocks );
@@ -24,7 +25,7 @@ export class Scene {
 		this.playerPosition = level.playerPosition;
 	}
 
-	_createBlocksFromJson( jsonBlocks ) {
+	_createBlocksFromJson( jsonBlocks: Array<RectangleBlockJson | CustomBlockJson> ) {
 		return jsonBlocks.map( jsonBlock => {
 			if ( jsonBlock.type == 'rectangle' ) {
 				return new RectangleBlock( jsonBlock.position, jsonBlock.width, jsonBlock.height );
@@ -32,14 +33,16 @@ export class Scene {
 			if ( jsonBlock.type == 'custom' ) {
 				return new CustomBlock( jsonBlock.points );
 			}
+
+			throw new Error();
 		} );
 	}
 
-	isExitAt( position ) {
+	isExitAt( position: Position ) {
 		return position.x == this.exit.x && position.y == this.exit.y;
 	}
 
-	isEmptyAt( position ) {
+	isEmptyAt( position: Position ) {
 		for ( const block of this.blocks ) {
 			for ( const partialPosition of block.partialPositions ) {
 				if ( position.x == partialPosition.x && position.y == partialPosition.y ) {
@@ -51,7 +54,7 @@ export class Scene {
 		return true;
 	}
 
-	canBlockBeMoved( block, moveVector ) {
+	canBlockBeMoved( block: Block, moveVector: Position ) {
 		let canBlockBeMoved = true;
 		const previousBlocks = this.blocks.slice();
 		this.blocks = this.blocks.filter( blockInArr => block !== blockInArr );
@@ -74,7 +77,7 @@ export class Scene {
 		return canBlockBeMoved;
 	}
 
-	findBlock( position ) {
+	findBlock( position: Position ) {
 		for ( const block of this.blocks ) {
 			for ( const partialPosition of block.partialPositions ) {
 				if ( position.x == partialPosition.x && position.y == partialPosition.y ) {
@@ -84,7 +87,7 @@ export class Scene {
 		}
 	}
 
-	isPositionOnBoard( position ) {
+	isPositionOnBoard( position: Position ) {
 		return (
 			position.x < this.board.width &&
 			position.y < this.board.height &&
@@ -93,7 +96,7 @@ export class Scene {
 		);
 	}
 
-	move( moveVector ) {
+	move( moveVector: Position ) {
 		const newPosition = {
 			x: this.playerPosition.x + moveVector.x,
 			y: this.playerPosition.y + moveVector.y
@@ -113,7 +116,7 @@ export class Scene {
 		if ( this.isEmptyAt( newPosition ) ) {
 			this.playerPosition = newPosition;
 		} else {
-			const block = this.findBlock( newPosition );
+			const block = this.findBlock( newPosition )!;
 
 			if ( this.canBlockBeMoved( block, moveVector ) ) {
 				this.playerPosition = newPosition;

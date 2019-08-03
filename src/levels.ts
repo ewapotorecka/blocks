@@ -1,5 +1,6 @@
+import { Level } from "./common";
 
-export const levels = [
+export const levels: Level[] = [
 	{
 		board: {
 			height: 10,

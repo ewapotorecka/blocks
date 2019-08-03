@@ -14,11 +14,11 @@ export const enum levelStates {
 export class Game {
 	public levelChangeEmitter: Emitter<{ previousLevel: number; currentLevel: number }>;
 	public levelsInfo: levelStates[];
-	public levelNum: number;
-	public levels: Level[];
-	private scene: Scene;
-	private ctx: CanvasRenderingContext2D;
-	private renderer: Renderer;
+	public levelNum!: number;
+	public levels!: Level[];
+	private scene!: Scene;
+	private ctx!: CanvasRenderingContext2D;
+	private renderer!: Renderer;
 
 	constructor() {
 		this.levelChangeEmitter = new Emitter();
@@ -31,7 +31,12 @@ export class Game {
 		this.levels = levels;
 		this.scene = new Scene( levelData );
 		const canvas = document.getElementById( 'blocksBoard' ) as HTMLCanvasElement;
-		this.ctx = canvas.getContext( '2d' );
+		const ctx = canvas.getContext( '2d' );
+
+		if ( ctx == null ) {
+			throw new Error( 'Canvas is not supported' );
+		}
+		this.ctx = ctx;
 
 		this.renderer = new Renderer( this.ctx, this.scene );
 		this.renderer.resizeBoard();
@@ -58,7 +63,7 @@ export class Game {
 		this.loadLevel( num );
 	}
 
-	loadLevel( id ) {
+	loadLevel( id: number ) {
 		const previousLevel = this.levelNum;
 		this.levelNum = id;
 		const level = levels[ this.levelNum ];

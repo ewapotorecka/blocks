@@ -1,10 +1,11 @@
+import { Position, Block } from "./common";
 
-export class RectangleBlock {
-	private position;
-	private width;
-	private height;
+export class RectangleBlock implements Block {
+	private position: Position;
+	private width: number;
+	private height: number;
 
-	constructor( position, width, height ) {
+	constructor( position: Position, width: number, height: number ) {
 		this.position = position;
 		this.width = width;
 		this.height = height;
@@ -25,12 +26,12 @@ export class RectangleBlock {
 		return blockPartialPositions;
 	}
 
-	draw( ctx, color, tileSize ) {
+	draw( ctx: CanvasRenderingContext2D, color: string, tileSize: number ) {
 		ctx.fillStyle = color;
 		ctx.fillRect( this.position.x * tileSize, this.position.y * tileSize, this.width * tileSize, this.height * tileSize );
 	}
 
-	updatePosition( moveVector ) {
+	updatePosition( moveVector: Position ) {
 		this.position.x += moveVector.x;
 		this.position.y += moveVector.y;
 	}
