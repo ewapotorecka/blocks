@@ -76,7 +76,7 @@ export class Game {
     }
 
     private handleKeyboard() {
-        document.addEventListener( 'keyup', event => {
+        document.addEventListener( 'keydown', event => {
             if ( event.key === 'ArrowUp' ) {
                 this.scene.move( { x: 0, y: -1 } );
             } else if ( event.key === 'ArrowDown' ) {

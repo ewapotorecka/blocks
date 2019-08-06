@@ -24,25 +24,73 @@
 
 		#instruction {
 			position: absolute;
-			/* border-style: solid;
-			border-color: #D90368; */
 			width: 340px;
 			text-align: center;
 			font-family: Oswald;
 			color: white;
 			background-color: #D90368;
+			padding: 20px;
+			margin-top: 10px;
+			margin-left: 10px;
+		}
+
+		#instruction button {
 			cursor: pointer;
-			transition: 0.3s all ease-in-out;
-			padding: 5px;
 		}
 
+		#buttons {
+			margin: 20px;
+		}
+
+		#buttons button {
+			font-family: Oswald;
+			margin: 5px;
+			margin-top: 20px;
+			width: 100px;
+			height: 30px;
+			border-radius: 5px;
+			font-size: 18px;
+		}
+
+		#level-list {
+			margin-top: 20px;
+			margin-left: 130px;
+		}
 		#level-list button {
+			margin: 5px;
 			display: block;
+			font-family: Oswald;
+			width: 80px;
+			font-size: 18px;
 		}
 
-		#skip-level {
-			background-color: aqua;
-			border: solid black;
+		button.done {
+			background-color: #2E294E;
+			color: #FFF;
+			border-radius: 4px;
+		}
+
+		button.undone {
+			background-color: 'white';
+			color: 'black';
+			border-radius: 4px;
+		}
+
+		button.skipped {
+			background-color: #FFD400;
+			color: black;
+			border-radius: 4px;
+		}
+
+		button.active {
+			background-color: 'white';
+			color: 'black';
+			border-radius: 4px;
+
+		}
+
+		button.active::before {
+			content: '>  ';
 		}
 
 		#canvas-space {
@@ -56,11 +104,12 @@
 		<div>Get to the exit.</div>
 		<div>You can move one block at a time by pushing it.</div>
 	
-		<div>
+		<div id="level-list"></div>
+
+		<div id="buttons">
 			<button id="skip-level">Skip level</button>
 			<button id="reset">Reset</button>
 		</div>
-		<div id="level-list"></div>
 
 	</div>
 	<div id="canvas-space">

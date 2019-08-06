@@ -71,7 +71,11 @@ export class Scene {
 
             if ( !this.isEmptyAt( newPosition ) ) {
                 canBlockBeMoved = false;
-            }
+			}
+			
+			if ( this.isExitAt( newPosition ) ) {
+				canBlockBeMoved = false;
+			}
         }
         this.blocks = previousBlocks;
         return canBlockBeMoved;
