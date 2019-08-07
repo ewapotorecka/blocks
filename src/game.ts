@@ -4,6 +4,7 @@ import { levels } from './levels';
 import { Renderer } from './renderer';
 import { Emitter } from './emitter';
 import { Level } from './common';
+import { KeyboardController } from './keyboardcontroller';
 
 export const enum levelStates {
     UNDONE = 0,
@@ -17,7 +18,8 @@ export class Game {
     public levelNum: number;
     public levels: Level[];
     private scene: Scene;
-    private renderer: Renderer;
+	private renderer: Renderer;
+	private keyboardController: KeyboardController;
 
     constructor( canvas: HTMLCanvasElement, levels: Level[] ) {
 		this.levelsInfo = levels.map( () => levelStates.UNDONE );
@@ -25,6 +27,7 @@ export class Game {
         const levelData = levels[ this.levelNum ];
 		this.levels = levels;
 		this.scene = new Scene( levelData );
+		this.keyboardController = new KeyboardController();
         const ctx = canvas.getContext( '2d' );
 
         if ( ctx == null ) {
@@ -37,7 +40,10 @@ export class Game {
     start() {
         this.renderer.resizeBoard();
         this.renderer.renderBoard();
-        this.handleKeyboard();
+        this.keyboardController.moveEmitter.subscribe( moveVector => {
+			this.scene.movePlayer( moveVector );
+			this.renderer.renderBoard();
+		} );
 
         this.scene.levelChangeEmitter.subscribe( () => {
             this.levelsInfo[ this.levelNum ] = levelStates.DONE;
@@ -73,21 +79,6 @@ export class Game {
     public skipCurrentLevel() {
         this.levelsInfo[ this.levelNum ] = levelStates.SKIPPED;
         this.loadNextLevel();
-    }
-
-    private handleKeyboard() {
-        document.addEventListener( 'keydown', event => {
-            if ( event.key === 'ArrowUp' ) {
-                this.scene.move( { x: 0, y: -1 } );
-            } else if ( event.key === 'ArrowDown' ) {
-                this.scene.move( { x: 0, y: 1 } );
-            } else if ( event.key === 'ArrowLeft' ) {
-                this.scene.move( { x: -1, y: 0 } );
-            } else if ( event.key === 'ArrowRight' ) {
-                this.scene.move( { x: 1, y: 0 } );
-            }
-            this.renderer.renderBoard();
-        } );
     }
 }
 

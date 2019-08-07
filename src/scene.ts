@@ -100,7 +100,7 @@ export class Scene {
         );
     }
 
-    move( moveVector: Position ) {
+    movePlayer( moveVector: Position ) {
         const newPosition = {
             x: this.playerPosition.x + moveVector.x,
             y: this.playerPosition.y + moveVector.y
