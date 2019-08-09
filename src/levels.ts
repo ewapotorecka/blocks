@@ -50,41 +50,62 @@ export const levels: Level[] = [
 	{
 		board: {
 			height: 20,
-			width: 10
+			width: 5
 		},
 		exit: { x: 0, y: 0 },
-		playerPosition: { x: 9, y: 9 },
+		playerPosition: { x: 4, y: 19 },
 		blocks: [
 			{
 				type: 'rectangle',
-				position: { x: 3, y: 4 },
-				width: 3,
+				position: { x: 1, y: 18 },
+				width: 4,
 				height: 1
 			},
 			{
 				type: 'custom',
-				points: [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ]
+				points: [ { x: 1, y: 17 }, { x: 2, y: 17 }, { x: 2, y: 14 }, { x: 3, y: 14 } ]
 			},
 			{
 				type: 'custom',
-				points: [ { x: 5, y: 1 }, { x: 5, y: 2 }, { x: 5, y: 3 }, { x: 4, y: 3 } ]
+				points: [ { x: 0, y: 16 }, { x: 2, y: 16 }, { x: 3, y: 16 },
+				{ x: 0, y: 13 }, { x: 1, y: 13 }, { x: 2, y: 13 }, { x: 4, y: 13 } ]
+			},
+			{
+				type: 'rectangle',
+				position: { x: 0, y: 11 },
+				width: 4,
+				height: 1
 			},
 			{
 				type: 'custom',
-				points: [ { x: 8, y: 5 }, { x: 8, y: 6 }, { x: 8, y: 7 }, { x: 7, y: 7 }, { x: 7, y: 5 } ]
+				points: [ { x: 2, y: 10 }, { x: 3, y: 10 }, { x: 1, y: 12 } ]
 			},
 			{
 				type: 'custom',
-				points: [ { x: 7, y: 4 }, { x: 8, y: 4 }, { x: 9, y: 4 }, { x: 9, y: 5 }, { x: 9, y: 6 } ]
+				points: [ { x: 1, y: 9 }, { x: 2, y: 9 }, { x: 4, y: 9 } ]
 			},
 			{
 				type: 'custom',
-				points: [ { x: 7, y: 8 }, { x: 8, y: 8 }, { x: 8, y: 9 } ]
+				points: [ { x: 0, y: 7 }, { x: 2, y: 7 }, { x: 3, y: 7 },
+				{ x: 0, y: 5 }, { x: 1, y: 5 }, { x: 2, y: 5 }, { x: 4, y: 5 } ]
 			},
 			{
 				type: 'custom',
-				points: [ { x: 1, y: 9 }, { x: 3, y: 9 } ]
+				points: [ { x: 1, y: 8 }, { x: 3, y: 6 } ]
+			},
+			{
+				type: 'rectangle',
+				position: { x: 1, y: 3 },
+				width: 4,
+				height: 1
+			},
+			{
+				type: 'rectangle',
+				position: { x: 0, y: 1 },
+				width: 4,
+				height: 1
 			}
+
 		]
 	},
 	{
