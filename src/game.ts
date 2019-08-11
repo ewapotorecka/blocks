@@ -39,10 +39,11 @@ export class Game {
 
     start() {
         this.renderer.resizeBoard();
-        this.renderer.renderBoard();
+		this.renderer.renderBoard();
+
         this.keyboardController.moveEmitter.subscribe( moveVector => {
 			this.scene.movePlayer( moveVector );
-			this.renderer.renderBoard();
+			this.renderer.animate();
 		} );
 
         this.scene.levelChangeEmitter.subscribe( () => {

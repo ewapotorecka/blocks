@@ -30,5 +30,10 @@ export interface CustomBlockJson {
 export interface Block {
     partialPositions: Position[];
     draw( ctx: CanvasRenderingContext2D, color: string, tileSize: number ): void;
-    updatePosition( moveVector: Position ): void;
+    move( moveVector: Position ): void;
+}
+
+export interface MoveInfo {
+	moveVector: Position;
+	block?: Block;
 }

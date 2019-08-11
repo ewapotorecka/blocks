@@ -31,7 +31,7 @@ export class RectangleBlock implements Block {
         ctx.fillRect( this.position.x * tileSize, this.position.y * tileSize, this.width * tileSize, this.height * tileSize );
     }
 
-    updatePosition( moveVector: Position ) {
+    move( moveVector: Position ) {
         this.position.x += moveVector.x;
         this.position.y += moveVector.y;
     }

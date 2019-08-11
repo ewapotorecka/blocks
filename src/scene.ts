@@ -1,6 +1,6 @@
 
 import { Emitter } from './emitter';
-import { Rectangle, Position, RectangleBlockJson, CustomBlockJson, Block, Level } from './common';
+import { Rectangle, Position, RectangleBlockJson, CustomBlockJson, Block, Level, MoveInfo } from './common';
 import { RectangleBlock } from './rectangleblock';
 import { CustomBlock } from './customblock';
 
@@ -9,7 +9,12 @@ export class Scene {
     public blocks!: Block[];
     public board!: Rectangle;
     public exit!: Position;
-    public playerPosition!: Position;
+	public playerPosition!: Position;
+	public moveInfo: MoveInfo = {
+		moveVector: {
+			x: 0, y: 0,
+		}
+	};
 
     constructor( levelData: Level ) {
         this.setLevelData( levelData );
@@ -104,27 +109,40 @@ export class Scene {
         const newPosition = {
             x: this.playerPosition.x + moveVector.x,
             y: this.playerPosition.y + moveVector.y
-        };
+		};
+		
+		this.moveInfo = {
+			moveVector: {
+				x: 0,
+				y: 0,
+			}
+		}
 
         if ( !this.isPositionOnBoard( newPosition ) ) {
             return;
         }
 
+
+
         if ( this.isExitAt( newPosition ) ) {
             this.playerPosition = newPosition;
-            this.levelChangeEmitter.emit();
+			this.levelChangeEmitter.emit();
+			this.moveInfo.moveVector = moveVector;
 
             return;
         }
 
         if ( this.isEmptyAt( newPosition ) ) {
-            this.playerPosition = newPosition;
+			this.playerPosition = newPosition;
+			this.moveInfo.moveVector = moveVector;
         } else {
             const block = this.findBlock( newPosition )!;
 
             if ( this.canBlockBeMoved( block, moveVector ) ) {
-                this.playerPosition = newPosition;
-                block.updatePosition( moveVector );
+				this.moveInfo.block = block;
+				this.playerPosition = newPosition;
+				this.moveInfo.moveVector = moveVector;
+                block.move( moveVector );
             }
         }
     }
