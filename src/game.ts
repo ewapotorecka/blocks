@@ -15,23 +15,22 @@ export const enum levelStates {
 export class Game {
 	public levelChangeEmitter = new Emitter();
 	public endGameEmitter = new Emitter();
-	public levelsInfo: levelStates[];
 	public levelNum: number;
-	public levels: Level[];
 	private scene: Scene;
 	private renderer: Renderer;
 	private keyboardController: KeyboardController;
 
-	constructor( canvas: HTMLCanvasElement, levels: Level[] ) {
-		this.levelsInfo = levels.map( () => levelStates.UNDONE );
-		this.levelNum = 0;
-		const levelData = levels[ this.levelNum ];
-		this.levels = levels;
-		this.scene = new Scene( levelData );
+	constructor(
+		canvas: HTMLCanvasElement,
+		public levels: Level[],
+		public levelsInfo = levels.map( () => levelStates.UNDONE )
+	) {
+		this.levelNum = -1;
+		this.scene = new Scene();
 		this.keyboardController = new KeyboardController();
 		const ctx = canvas.getContext( '2d' );
 
-		if ( ctx == null ) {
+		if ( !ctx ) {
 			throw new Error( 'Canvas is not supported' );
 		}
 
@@ -39,9 +38,6 @@ export class Game {
 	}
 
 	start() {
-		this.renderer.resizeBoard();
-		this.renderer.renderBoard();
-
 		this.keyboardController.moveEmitter.subscribe( moveVector => {
 			this.scene.movePlayer( moveVector );
 			this.renderer.animate();
@@ -57,7 +53,7 @@ export class Game {
 			this.renderer.renderBoard();
 		} );
 
-		this.levelChangeEmitter.emit();
+		this.loadNextLevel();
 	}
 
 	public loadNextLevel() {
@@ -107,6 +103,10 @@ export class Game {
 
 		if ( this.levelsInfo[ index ] == levelStates.SKIPPED ) {
 			return true;
+		}
+
+		if ( this.levelsInfo[ index ] == levelStates.DONE ) {
+			return false;
 		}
 
 		if (

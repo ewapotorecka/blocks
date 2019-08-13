@@ -2,10 +2,18 @@ import { Game } from './game';
 import { Menu } from './menu';
 import { levels } from './levels';
 
+let progress;
 
-const game = new Game( document.getElementById( 'blocksBoard' ) as HTMLCanvasElement, levels);
+if ( localStorage.getItem( 'levelInfo' ) ) {
+	progress = JSON.parse( localStorage.getItem( 'levelInfo' )! );
+}
+
+const game = new Game( document.getElementById( 'blocksBoard' ) as HTMLCanvasElement, levels, progress );
 const menu = new Menu( game );
 game.start();
+game.levelChangeEmitter.subscribe( () => {
+	localStorage.setItem( 'levelInfo', JSON.stringify( game.levelsInfo ) );
+})
 
 game.endGameEmitter.subscribe( () => {
 	const endScreen: HTMLElement = document.getElementById( 'end-screen' )!;

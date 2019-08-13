@@ -16,8 +16,7 @@ export class Scene {
 		}
 	};
 
-    constructor( levelData: Level ) {
-        this.setLevelData( levelData );
+    constructor() {
         this.levelChangeEmitter = new Emitter();
     }
 
