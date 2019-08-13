@@ -6,10 +6,6 @@ export class Menu {
         const resetButton = document.getElementById( 'reset' )!;
 		const levelList = document.getElementById( 'level-list' )!;
 		
-        game.levelChangeEmitter.subscribe( () => {
-        	setButtonColors( game, levelList );
-        } );
-
         skipLevelButton.addEventListener( 'click', () => {
 			let skippedLevels = 1;
 			for ( const level of game.levelsInfo ) {
@@ -19,7 +15,7 @@ export class Menu {
 			}
 
 			if ( skippedLevels > 2 ) {
-				console.log( 'You can skip up to 2 levels!' );
+				window.alert( 'You can skip up to 2 levels.' );
 				return;
 			}
             game.skipCurrentLevel();
@@ -31,18 +27,15 @@ export class Menu {
             levelList.appendChild( button );
             button.innerText = 'Level ' + ( i + 1 ).toString();
             button.addEventListener( 'click', () => {
-                if ( game.levelsInfo[ i ] == levelStates.SKIPPED  ) {
-                    game.loadLevel( i );
-                } else if ( game.levelsInfo[ i - 1 ] == levelStates.DONE ||  game.levelsInfo[ i - 1 ] == levelStates.SKIPPED ) {
+				if ( game.canLevelBeLoaded( i ) ) {
 					game.loadLevel( i );
 				}
-            } );
+			} );
 		}
 
-    }
-
-    renderLevelButtons() {
-
+		game.levelChangeEmitter.subscribe( () => {
+        	setButtonColors( game, levelList );
+		} );
     }
 }
 
@@ -64,6 +57,12 @@ function setButtonColors( game: Game, levelList: HTMLElement ) {
 		}
 		if ( game.levelNum == index ) {
 			button.classList.add( 'active' );
+		}
+
+		if ( !game.canLevelBeLoaded( index ) ) {
+			button.style.cursor = 'auto';
+		} else {
+			button.style.cursor = 'pointer';
 		}
 	} );
 }

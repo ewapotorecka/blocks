@@ -96,6 +96,38 @@
 		#canvas-space {
 			display: block;
 		}
+
+		#end-screen {
+			position: absolute;
+			width: 100%;
+			height: 100vh;
+			visibility: hidden;
+			background-color:#2E294E;
+			top: 0;
+			left: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			font-family: Oswald;
+			color: white;
+			font-size: 30px;
+
+		}
+
+		#alert {
+			margin: 20px;
+		}
+
+		#end-screen button {
+			font-family: Oswald;
+			width: 200px;
+			height: 30px;
+			border-radius: 5px;
+			font-size: 18px;
+			cursor: pointer;
+		}
+
 	</style>
 </head>
 
@@ -114,6 +146,14 @@
 	</div>
 	<div id="canvas-space">
 		<canvas id="blocksBoard"></canvas>
+	</div>
+	<div id="end-screen">
+		<div id="alert">
+			You finished all levels! 
+		</div>
+		<div>
+			<button id="restart-game">Restart game</button>
+		</div>
 	</div>
 	<script src="dist/main.js"></script>
 </body>
