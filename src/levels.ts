@@ -110,34 +110,6 @@ export const levels: Level[] = [
 	},
 	{
 		board: {
-			height: 10,
-			width: 10
-		},
-		exit: { x: 0, y: 0 },
-		playerPosition: { x: 9, y: 9 },
-		blocks: [
-			{
-				type: 'rectangle',
-				position: { x: 3, y: 4 },
-				width: 3,
-				height: 1
-			},
-			{
-				type: 'custom',
-				points: [ { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 1 }, { x: 2, y: 2 } ]
-			},
-			{
-				type: 'custom',
-				points: [ { x: 7, y: 8 }, { x: 8, y: 8 }, { x: 8, y: 9 } ]
-			},
-			{
-				type: 'custom',
-				points: [ { x: 1, y: 9 }, { x: 3, y: 9 } ]
-			}
-		]
-	},
-	{
-		board: {
 			height: 8,
 			width: 9
 		},
