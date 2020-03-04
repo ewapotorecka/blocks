@@ -9,6 +9,7 @@ https://ewapotorecka.github.io/blockgame/
 ## How to run locally
 
 npm install
+
 npm run build
 
 Open index.html in the browser
