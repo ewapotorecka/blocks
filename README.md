@@ -4,14 +4,16 @@
 
 A simple game, where you have to push blocks to clear the way to the exit.
 
-Demo: https://ewapotorecka.github.io/blockgame/
+Demo: https://ewapotorecka.github.io/blocks/
 
 ## How to run locally
 
-``` npm install
+``` 
+npm install
 
-npm run build ```
+npm run build 
+```
 
-Open index.html in the browser
+Open `index.html` in the browser
 
 
