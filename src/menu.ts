@@ -1,11 +1,11 @@
 import { levelStates, Game } from './game';
 
 export class Menu {
-    constructor( game: Game ) {
+    public constructor( game: Game ) {
         const skipLevelButton = document.getElementById( 'skip-level' )!;
         const resetButton = document.getElementById( 'reset' )!;
 		const levelList = document.getElementById( 'level-list' )!;
-		
+
         skipLevelButton.addEventListener( 'click', () => {
 			let skippedLevels = 1;
 			for ( const level of game.levelsInfo ) {
