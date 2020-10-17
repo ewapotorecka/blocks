@@ -663,8 +663,18 @@ __webpack_require__.r(__webpack_exports__);
 class Menu {
     constructor(game) {
         const skipLevelButton = document.getElementById('skip-level');
-        const resetButton = document.getElementById('reset');
+        const resetLevelButton = document.getElementById('reset-level');
+        const levelsListButton = document.getElementById('levels-button');
+        const levelListContainer = document.getElementById('level-list-container');
         const levelList = document.getElementById('level-list');
+        levelsListButton.addEventListener('click', () => {
+            if (levelListContainer.classList.contains('hidden')) {
+                levelListContainer.classList.remove('hidden');
+            }
+            else {
+                levelListContainer.classList.add('hidden');
+            }
+        });
         skipLevelButton.addEventListener('click', () => {
             let skippedLevels = 1;
             for (const level of game.levelsInfo) {
@@ -678,7 +688,7 @@ class Menu {
             }
             game.skipCurrentLevel();
         });
-        resetButton.addEventListener('click', () => game.loadLevel(game.levelNum));
+        resetLevelButton.addEventListener('click', () => game.loadLevel(game.levelNum));
         for (let i = 0; i < game.levels.length; i++) {
             const button = document.createElement('BUTTON');
             levelList.appendChild(button);

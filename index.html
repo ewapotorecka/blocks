@@ -5,12 +5,23 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Noto+Sans&display=swap" rel="stylesheet">
 	<title>Blocks Game</title>
 	<style>
 		body {
-			background-color: #F1E9DA;
 			margin: 0;
+		}
+
+		body::after {
+			content: "";
+ 			background: url('./img/oriental-tiles.png');
+			opacity: 0.3;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			position: absolute;
+			z-index: -1;
 		}
 
 		canvas {
@@ -20,49 +31,72 @@
 			margin-right: auto;
 			display: block;
 			background-color: #541388;
+			border-radius:5px;
 		}
 
-		#instruction {
+		#main {
+			display: flex;
+		}
+
+		#welcome {
+			width: 100vw;
+			height: 100vh;
 			position: absolute;
-			width: 340px;
+			background: url('./img/oriental-tiles.png');
+			z-index: 1;
+			visibility: hidden;
 			text-align: center;
-			font-family: Oswald;
-			color: white;
-			background-color: #D90368;
-			padding: 20px;
-			margin-top: 10px;
-			margin-left: 10px;
 		}
 
-		#instruction button {
-			cursor: pointer;
+		#welcome-instructions {
+			position: absolute;
+			height: 50%;
+			width: 50%;
+			top: 25%;
+			left: 25%;
+			background-color: #B7B8C4;
+			border: 1px solid black;
+			border-radius: 5px;
+			padding: 10px;
+			font-family: 'Lato', sans-serif;
 		}
 
-		#buttons {
-			margin: 20px;
-		}
-
-		#buttons button {
-			font-family: Oswald;
-			margin: 5px;
-			margin-top: 20px;
+		#welcome-instructions button {
+			font-family: 'Noto Sans', sans-serif;
+			text-transform: capitalize;
+			margin: 10px;
 			width: 100px;
 			height: 30px;
 			border-radius: 5px;
 			font-size: 18px;
 		}
 
-		#level-list {
-			margin-top: 20px;
-			margin-left: 130px;
+		#level-list-container {
+			position: absolute;
 		}
-		#level-list button {
-			margin: 5px;
-			display: block;
-			font-family: Oswald;
-			width: 80px;
+
+		#level-list-container button {
+			width: 100px;
+			text-align: center;
+			font-family: 'Noto Sans', sans-serif;
+			text-transform: capitalize;
 			font-size: 18px;
 		}
+
+		#level-list-container.hidden {
+			visibility: hidden;
+		}
+
+		#buttons-container button {
+			font-family: 'Noto Sans', sans-serif;
+			text-transform: uppercase;
+			margin: 10px;
+			width: 100px;
+			height: 30px;
+			border-radius: 5px;
+			font-size: 14px;
+		}
+
 
 		button.done {
 			background-color: #2E294E;
@@ -128,33 +162,46 @@
 			cursor: pointer;
 		}
 
+		#buttons-container button {
+			display: block;
+		}
+
 	</style>
 </head>
 
 <body>
-	<div id="instruction">
-		<div>Find the way to the exit.</div>
-		<div>You can push one block at a time.</div>
-	
-		<div id="level-list"></div>
-
-		<div id="buttons">
+	<div id="main">
+		<div id="welcome">
+			<div id="welcome-instructions">
+				<h2>WELCOME TO THE BLOCK GAME</h2>
+				<p>Your job is to move around blocks, so that you can get to the exit.</p>
+				<p>You can push one block at a time.</p>
+				<p>Be careful - some blocks (with the same color) are connected.</p>
+				<button id="start">START</button>
+			</div>
+		</div>
+		<div id="buttons-container">
 			<button id="skip-level">Skip level</button>
-			<button id="reset">Reset</button>
+			<button id="reset-level">Reset level</button>
+			<button id="levels-button">Levels list</button>
+			<div id="level-list-container" class="hidden">
+				<div id="level-list"></div>
+			</div>
 		</div>
 
-	</div>
-	<div id="canvas-space">
-		<canvas id="blocksBoard"></canvas>
-	</div>
-	<div id="end-screen">
-		<div id="alert">
-			You finished all levels! 
+		<div id="canvas-space">
+			<canvas id="blocksBoard"></canvas>
 		</div>
-		<div>
-			<button id="restart-game">Restart game</button>
+		<div id="end-screen">
+			<div id="alert">
+				You finished all levels!
+			</div>
+			<div>
+				<button id="restart-game">Restart game</button>
+			</div>
 		</div>
 	</div>
+
 	<script src="dist/main.js"></script>
 </body>
 

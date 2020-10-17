@@ -1,16 +1,27 @@
+/* eslint-disable no-alert */
 import { levelStates, Game } from './game';
 
 export class Menu {
-    public constructor( game: Game ) {
-        const skipLevelButton = document.getElementById( 'skip-level' )!;
-        const resetButton = document.getElementById( 'reset' )!;
+	public constructor( game: Game ) {
+		const skipLevelButton = document.getElementById( 'skip-level' )!;
+		const resetLevelButton = document.getElementById( 'reset-level' )!;
+		const levelsListButton = document.getElementById( 'levels-button' )!;
+		const levelListContainer = document.getElementById( 'level-list-container' )!;
 		const levelList = document.getElementById( 'level-list' )!;
 
-        skipLevelButton.addEventListener( 'click', () => {
+		levelsListButton.addEventListener( 'click', () => {
+			if ( levelListContainer.classList.contains( 'hidden' ) ) {
+				levelListContainer.classList.remove( 'hidden' );
+			} else {
+				levelListContainer.classList.add( 'hidden' );
+			}
+		} );
+
+		skipLevelButton.addEventListener( 'click', () => {
 			let skippedLevels = 1;
 			for ( const level of game.levelsInfo ) {
 				if ( level == levelStates.SKIPPED ) {
-					skippedLevels++
+					skippedLevels++;
 				}
 			}
 
@@ -18,15 +29,15 @@ export class Menu {
 				window.alert( 'You can skip up to 2 levels.' );
 				return;
 			}
-            game.skipCurrentLevel();
-        } );
-        resetButton.addEventListener( 'click', () => game.loadLevel( game.levelNum ) );
+			game.skipCurrentLevel();
+		} );
+		resetLevelButton.addEventListener( 'click', () => game.loadLevel( game.levelNum ) );
 
-        for ( let i = 0; i < game.levels.length; i++ ) {
-            const button = document.createElement( 'BUTTON' );
-            levelList.appendChild( button );
-            button.innerText = 'Level ' + ( i + 1 ).toString();
-            button.addEventListener( 'click', () => {
+		for ( let i = 0; i < game.levels.length; i++ ) {
+			const button = document.createElement( 'BUTTON' );
+			levelList.appendChild( button );
+			button.innerText = 'Level ' + ( i + 1 ).toString();
+			button.addEventListener( 'click', () => {
 				if ( game.canLevelBeLoaded( i ) ) {
 					game.loadLevel( i );
 				}
@@ -34,9 +45,9 @@ export class Menu {
 		}
 
 		game.levelChangeEmitter.subscribe( () => {
-        	setButtonColors( game, levelList );
+			setButtonColors( game, levelList );
 		} );
-    }
+	}
 }
 
 function setButtonColors( game: Game, levelList: HTMLElement ) {
@@ -44,16 +55,16 @@ function setButtonColors( game: Game, levelList: HTMLElement ) {
 		const button = levelList.children[ index ] as HTMLElement;
 		button.className = '';
 
-		switch( state ) {
-			case levelStates.DONE:
-				button.classList.add( 'done' );
-				break;
-			case levelStates.SKIPPED:
-				button.classList.add( 'skipped' );
-				break;
-			case levelStates.UNDONE:
-				button.classList.add( 'undone' );
-				break;
+		switch ( state ) {
+		case levelStates.DONE:
+			button.classList.add( 'done' );
+			break;
+		case levelStates.SKIPPED:
+			button.classList.add( 'skipped' );
+			break;
+		case levelStates.UNDONE:
+			button.classList.add( 'undone' );
+			break;
 		}
 		if ( game.levelNum == index ) {
 			button.classList.add( 'active' );

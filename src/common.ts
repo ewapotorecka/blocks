@@ -34,6 +34,6 @@ export interface Block {
 }
 
 export interface MoveInfo {
-	moveVector: Position;
-	block?: Block;
+    moveVector: Position;
+    block?: Block;
 }

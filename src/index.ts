@@ -13,7 +13,7 @@ const menu = new Menu( game );
 game.start();
 game.levelChangeEmitter.subscribe( () => {
 	localStorage.setItem( 'levelInfo', JSON.stringify( game.levelsInfo ) );
-})
+} );
 
 game.endGameEmitter.subscribe( () => {
 	const endScreen: HTMLElement = document.getElementById( 'end-screen' )!;
@@ -22,9 +22,8 @@ game.endGameEmitter.subscribe( () => {
 	endScreen.style.visibility = 'visible';
 	restartButton.addEventListener( 'click', () => {
 		game.resetGame();
-		endScreen.style.visibility= 'hidden';
+		endScreen.style.visibility = 'hidden';
 	} );
+} );
 
-});
-
-(window as any).game = game;
+( window as any ).game = game;
