@@ -80,7 +80,7 @@ export class Renderer {
 			x: this._scene.playerPosition.x - ( 5 - this.animationFrame ) / 5 * this._scene.moveInfo.moveVector.x,
 			y: this._scene.playerPosition.y - ( 5 - this.animationFrame ) / 5 * this._scene.moveInfo.moveVector.y
 		};
-        this._ctx.fillStyle = '#FFD400';
+        this._ctx.fillStyle = '#FFEE00';
         this._ctx.beginPath();
         this._ctx.arc(
             player.x * this._tileSize + this._tileSize / 2,
@@ -92,7 +92,7 @@ export class Renderer {
 
     _drawExit() {
         const exit = this._scene.exit;
-        this._ctx.fillStyle = '#D90368';
+        this._ctx.fillStyle = '#F549C8';
         this._ctx.fillRect( exit.x * this._tileSize, exit.y * this._tileSize, this._tileSize, this._tileSize );
     }
 }

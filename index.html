@@ -27,11 +27,15 @@
 		canvas {
 			padding-left: 0;
 			padding-right: 0;
-			margin-left: 400px;
+			margin-left: 300px;
 			margin-right: auto;
 			display: block;
-			background-color: #541388;
+			background-color: #3C1874;
 			border-radius:5px;
+		}
+
+		button {
+			cursor: pointer;
 		}
 
 		#main {
@@ -44,8 +48,11 @@
 			position: absolute;
 			background: url('./img/oriental-tiles.png');
 			z-index: 1;
-			visibility: hidden;
 			text-align: center;
+		}
+
+		#welcome.hidden {
+			visibility: hidden;
 		}
 
 		#welcome-instructions {
@@ -63,7 +70,7 @@
 
 		#welcome-instructions button {
 			font-family: 'Noto Sans', sans-serif;
-			text-transform: capitalize;
+			text-transform: uppercase;
 			margin: 10px;
 			width: 100px;
 			height: 30px;
@@ -132,38 +139,46 @@
 		}
 
 		#end-screen {
-			position: absolute;
-			width: 100%;
+			width: 100vw;
 			height: 100vh;
+			position: absolute;
+			background: url('./img/oriental-tiles.png');
+			z-index: 1;
+			text-align: center;
 			visibility: hidden;
-			background-color:#2E294E;
-			top: 0;
-			left: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-			font-family: Oswald;
-			color: white;
-			font-size: 30px;
-
 		}
 
 		#alert {
-			margin: 20px;
+			position: absolute;
+			height: 50%;
+			width: 30%;
+			top: 25%;
+			left: 35%;
+			background-color: #B7B8C4;
+			border: 1px solid black;
+			border-radius: 5px;
+			padding: 10px;
+			font-family: 'Lato', sans-serif;
+			font-weight: bold;
 		}
 
 		#end-screen button {
-			font-family: Oswald;
+			font-family: 'Noto Sans', sans-serif;
+			text-transform: uppercase;
+			margin: 10px;
 			width: 200px;
 			height: 30px;
 			border-radius: 5px;
 			font-size: 18px;
-			cursor: pointer;
 		}
 
 		#buttons-container button {
 			display: block;
+		}
+
+		#reset-game {
+			position: absolute;
+   			bottom: 0;
 		}
 
 	</style>
@@ -187,6 +202,7 @@
 			<div id="level-list-container" class="hidden">
 				<div id="level-list"></div>
 			</div>
+			<button id="reset-game">Reset game</button>
 		</div>
 
 		<div id="canvas-space">
@@ -194,10 +210,12 @@
 		</div>
 		<div id="end-screen">
 			<div id="alert">
-				You finished all levels!
-			</div>
-			<div>
-				<button id="restart-game">Restart game</button>
+				<div id="end-game-info">
+					<h1>Congrats!</h1>
+					<h2>You finished all levels!</h2>
+					<button id="restart-game">Restart game</button>
+				</div>
+
 			</div>
 		</div>
 	</div>

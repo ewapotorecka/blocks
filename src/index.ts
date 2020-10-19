@@ -21,7 +21,7 @@ game.endGameEmitter.subscribe( () => {
 
 	endScreen.style.visibility = 'visible';
 	restartButton.addEventListener( 'click', () => {
-		game.resetGame();
+		game.resetLevel();
 		endScreen.style.visibility = 'hidden';
 	} );
 } );

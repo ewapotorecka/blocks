@@ -3,11 +3,25 @@ import { levelStates, Game } from './game';
 
 export class Menu {
 	public constructor( game: Game ) {
+		const startGameButton = document.getElementById( 'start' )!;
 		const skipLevelButton = document.getElementById( 'skip-level' )!;
 		const resetLevelButton = document.getElementById( 'reset-level' )!;
 		const levelsListButton = document.getElementById( 'levels-button' )!;
+		const resetGameButton = document.getElementById( 'reset-game' )!;
 		const levelListContainer = document.getElementById( 'level-list-container' )!;
 		const levelList = document.getElementById( 'level-list' )!;
+		const welcomeScreen = document.getElementById( 'welcome' )!;
+
+		startGameButton.addEventListener( 'click', () => {
+			welcomeScreen.classList.add( 'hidden' );
+		} );
+
+		resetGameButton.addEventListener( 'click', () => {
+			if ( window.confirm() ) {
+				game.resetGame();
+				welcomeScreen.classList.remove( 'hidden' );
+			}
+		} );
 
 		levelsListButton.addEventListener( 'click', () => {
 			if ( levelListContainer.classList.contains( 'hidden' ) ) {
@@ -31,6 +45,7 @@ export class Menu {
 			}
 			game.skipCurrentLevel();
 		} );
+
 		resetLevelButton.addEventListener( 'click', () => game.loadLevel( game.levelNum ) );
 
 		for ( let i = 0; i < game.levels.length; i++ ) {
@@ -47,6 +62,8 @@ export class Menu {
 		game.levelChangeEmitter.subscribe( () => {
 			setButtonColors( game, levelList );
 		} );
+
+		welcomeScreen.classList.remove( 'hidden' );
 	}
 }
 

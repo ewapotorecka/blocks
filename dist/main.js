@@ -222,10 +222,17 @@ class Game {
         this.levelsInfo[this.levelNum] = 2 /* SKIPPED */;
         this.loadNextLevel();
     }
-    resetGame() {
+    resetLevel() {
         this.levelsInfo = _levels__WEBPACK_IMPORTED_MODULE_1__["levels"].map(() => 0 /* UNDONE */);
         this.levelNum = 0;
         this.loadLevel(this.levelNum);
+    }
+    resetGame() {
+        localStorage.clear();
+        for (let i = 0; i < this.levelsInfo.length; i++) {
+            this.levelsInfo[i] = 0;
+        }
+        this.loadLevel(0);
     }
     canLevelBeLoaded(index) {
         if (index === 0 && this.levelsInfo[index] == 0 /* UNDONE */) {
@@ -275,10 +282,12 @@ game.levelChangeEmitter.subscribe(() => {
 });
 game.endGameEmitter.subscribe(() => {
     const endScreen = document.getElementById('end-screen');
-    const restartButton = document.getElementById('restart-game');
+	const restartButton = document.getElementById('restart-game');
+	const welcomeScreen = document.getElementById( 'welcome' );
     endScreen.style.visibility = 'visible';
     restartButton.addEventListener('click', () => {
-        game.resetGame();
+		game.resetGame();
+		welcomeScreen.classList.remove( 'hidden' );
         endScreen.style.visibility = 'hidden';
     });
 });
@@ -662,11 +671,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Menu", function() { return Menu; });
 class Menu {
     constructor(game) {
+        const startGameButton = document.getElementById('start');
         const skipLevelButton = document.getElementById('skip-level');
         const resetLevelButton = document.getElementById('reset-level');
         const levelsListButton = document.getElementById('levels-button');
+        const resetGameButton = document.getElementById('reset-game');
         const levelListContainer = document.getElementById('level-list-container');
         const levelList = document.getElementById('level-list');
+        const welcomeScreen = document.getElementById('welcome');
+        startGameButton.addEventListener('click', () => {
+            welcomeScreen.classList.add('hidden');
+        });
+        resetGameButton.addEventListener('click', () => {
+            if (window.confirm()) {
+                game.resetGame();
+                welcomeScreen.classList.remove('hidden');
+            }
+        });
         levelsListButton.addEventListener('click', () => {
             if (levelListContainer.classList.contains('hidden')) {
                 levelListContainer.classList.remove('hidden');
@@ -702,6 +723,7 @@ class Menu {
         game.levelChangeEmitter.subscribe(() => {
             setButtonColors(game, levelList);
         });
+        welcomeScreen.classList.remove('hidden');
     }
 }
 function setButtonColors(game, levelList) {
@@ -845,14 +867,14 @@ class Renderer {
             x: this._scene.playerPosition.x - (5 - this.animationFrame) / 5 * this._scene.moveInfo.moveVector.x,
             y: this._scene.playerPosition.y - (5 - this.animationFrame) / 5 * this._scene.moveInfo.moveVector.y
         };
-        this._ctx.fillStyle = '#FFD400';
+        this._ctx.fillStyle = '#FFEE00';
         this._ctx.beginPath();
         this._ctx.arc(player.x * this._tileSize + this._tileSize / 2, player.y * this._tileSize + this._tileSize / 2, this._tileSize / 2, 0, 2 * Math.PI);
         this._ctx.fill();
     }
     _drawExit() {
         const exit = this._scene.exit;
-        this._ctx.fillStyle = '#D90368';
+        this._ctx.fillStyle = '#F549C8';
         this._ctx.fillRect(exit.x * this._tileSize, exit.y * this._tileSize, this._tileSize, this._tileSize);
     }
 }

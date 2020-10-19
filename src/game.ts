@@ -88,12 +88,18 @@ export class Game {
 		this.loadNextLevel();
 	}
 
-	public resetGame() {
+	public resetLevel() {
 		this.levelsInfo = levels.map( () => levelStates.UNDONE );
 		this.levelNum = 0;
 		this.loadLevel( this.levelNum );
+	}
 
-
+	public resetGame() {
+		localStorage.clear();
+		for ( let i = 0; i < this.levelsInfo.length; i++ ) {
+			this.levelsInfo[ i ] = 0;
+		}
+		this.loadLevel( 0 );
 	}
 
 	public canLevelBeLoaded( index: number ) {
