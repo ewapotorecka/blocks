@@ -5,6 +5,7 @@ import { Renderer } from './renderer';
 import { Emitter } from './emitter';
 import { Level } from './common';
 import { KeyboardController } from './keyboardcontroller';
+import { ImageManager } from './imageManager';
 
 export const enum levelStates {
 	UNDONE = 0,
@@ -23,7 +24,8 @@ export class Game {
 	constructor(
 		canvas: HTMLCanvasElement,
 		public levels: Level[],
-		public levelsInfo = levels.map( () => levelStates.UNDONE )
+		public levelsInfo = levels.map( () => levelStates.UNDONE ),
+		public imageManager: ImageManager
 	) {
 		this.levelNum = -1;
 		this.scene = new Scene();
@@ -34,7 +36,7 @@ export class Game {
 			throw new Error( 'Canvas is not supported' );
 		}
 
-		this.renderer = new Renderer( ctx, this.scene );
+		this.renderer = new Renderer( ctx, this.scene, imageManager );
 	}
 
 	start() {

@@ -1,6 +1,7 @@
 import { Game } from './game';
 import { Menu } from './menu';
 import { levels } from './levels';
+import { ImageManager } from './imageManager';
 
 let progress;
 
@@ -8,9 +9,15 @@ if ( localStorage.getItem( 'levelInfo' ) ) {
 	progress = JSON.parse( localStorage.getItem( 'levelInfo' )! );
 }
 
-const game = new Game( document.getElementById( 'blocksBoard' ) as HTMLCanvasElement, levels, progress );
+const imageManager = new ImageManager();
+const game = new Game( document.getElementById( 'blocksBoard' ) as HTMLCanvasElement, levels, progress, imageManager );
 const menu = new Menu( game );
-game.start();
+
+imageManager.load( {
+	pig: './img/pig.png'
+} )
+	.then( () => game.start() );
+
 game.levelChangeEmitter.subscribe( () => {
 	localStorage.setItem( 'levelInfo', JSON.stringify( game.levelsInfo ) );
 } );

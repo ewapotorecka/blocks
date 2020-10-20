@@ -1,3 +1,4 @@
+import { ImageManager } from './imageManager';
 import { Scene } from './scene';
 
 export class Renderer {
@@ -6,11 +7,11 @@ export class Renderer {
 	private _tileSize!: number;
 	private animationFrame = 5;
 
-    constructor( ctx: CanvasRenderingContext2D, scene: Scene ) {
-        this._ctx = ctx;
-        this._scene = scene;
+	constructor( ctx: CanvasRenderingContext2D, scene: Scene, private imageManager: ImageManager ) {
+		this._ctx = ctx;
+		this._scene = scene;
 	}
-	
+
 	animate() {
 		for ( let i = 0; i < 5; i++ ) {
 			setTimeout( () => {
@@ -20,50 +21,50 @@ export class Renderer {
 		}
 	}
 
-    renderBoard() {
-        this._clearCanvas();
-        this._drawBoard();
-        this._drawBlocks();
-        this._drawPlayer();
-        this._drawExit();
-    }
-
-    resizeBoard() {
-        if ( window.innerHeight / this._scene.board.height < ( window.innerWidth - 400 ) / this._scene.board.width ) {
-            this._tileSize = window.innerHeight / this._scene.board.height;
-        } else {
-            this._tileSize = ( window.innerWidth - 400 ) / this._scene.board.width;
-        }
-
-        this._ctx.canvas.height = this._scene.board.height * this._tileSize;
-        this._ctx.canvas.width = this._scene.board.width * this._tileSize;
+	renderBoard() {
+		this._clearCanvas();
+		this._drawBoard();
+		this._drawBlocks();
+		this._drawPlayer();
+		this._drawExit();
 	}
 
-    _clearCanvas() {
-        this._ctx.clearRect( 0, 0, this._ctx.canvas.width, this._ctx.canvas.height );
-    }
+	resizeBoard() {
+		if ( window.innerHeight / this._scene.board.height < ( window.innerWidth - 400 ) / this._scene.board.width ) {
+			this._tileSize = window.innerHeight / this._scene.board.height;
+		} else {
+			this._tileSize = ( window.innerWidth - 400 ) / this._scene.board.width;
+		}
 
-    _drawBoard() {
-        const board = this._scene.board;
+		this._ctx.canvas.height = this._scene.board.height * this._tileSize;
+		this._ctx.canvas.width = this._scene.board.width * this._tileSize;
+	}
 
-        this._ctx.strokeRect(
-            0, 0, board.width * this._tileSize, board.height * this._tileSize
-        );
-    }
+	_clearCanvas() {
+		this._ctx.clearRect( 0, 0, this._ctx.canvas.width, this._ctx.canvas.height );
+	}
 
-    _drawBlocks() {
-        const colorAdd = 255 / this._scene.blocks.length;
-        let colorNum = 0;
-        for ( const block of this._scene.blocks ) {
+	_drawBoard() {
+		const board = this._scene.board;
+
+		this._ctx.strokeRect(
+			0, 0, board.width * this._tileSize, board.height * this._tileSize
+		);
+	}
+
+	_drawBlocks() {
+		const colorAdd = 255 / this._scene.blocks.length;
+		let colorNum = 0;
+		for ( const block of this._scene.blocks ) {
 			const color = `rgb( ${ colorNum }, ${ colorNum }, ${ colorNum } )`;
-			
-			if( block == this._scene.moveInfo.block ) {
+
+			if ( block == this._scene.moveInfo.block ) {
 				this._ctx.save();
 
 				this._ctx.translate(
 					this._tileSize * -( 5 - this.animationFrame ) / 5 * this._scene.moveInfo.moveVector.x, 
 					this._tileSize * -( 5 - this.animationFrame ) / 5 * this._scene.moveInfo.moveVector.y
-					);
+				);
 				block.draw( this._ctx, color, this._tileSize );
 
 				this._ctx.restore();
@@ -71,29 +72,32 @@ export class Renderer {
 				block.draw( this._ctx, color, this._tileSize );
 			}
 
-            colorNum = colorNum + colorAdd;
-        }
-    }
-
-    _drawPlayer() {
-        const player = {
+			colorNum = colorNum + colorAdd;
+		}
+	}
+// draw player przed gra
+	_drawPlayer() {
+		const player = {
 			x: this._scene.playerPosition.x - ( 5 - this.animationFrame ) / 5 * this._scene.moveInfo.moveVector.x,
 			y: this._scene.playerPosition.y - ( 5 - this.animationFrame ) / 5 * this._scene.moveInfo.moveVector.y
 		};
-        this._ctx.fillStyle = '#FFEE00';
-        this._ctx.beginPath();
-        this._ctx.arc(
-            player.x * this._tileSize + this._tileSize / 2,
-            player.y * this._tileSize + this._tileSize / 2,
-            this._tileSize / 2, 0, 2 * Math.PI
-        );
-        this._ctx.fill();
-    }
+		const pig = this.imageManager.images.get( 'pig' )!;
+		
+		this._ctx.drawImage( pig, player.x * this._tileSize, player.y * this._tileSize, this._tileSize, this._tileSize );
+		// this._ctx.fillStyle = '#FFEE00';
+		// this._ctx.beginPath();
+		// this._ctx.arc(
+		// 	player.x * this._tileSize + this._tileSize / 2,
+		// 	player.y * this._tileSize + this._tileSize / 2,
+		// 	this._tileSize / 2, 0, 2 * Math.PI
+		// );
+		// this._ctx.fill();
+	}
 
-    _drawExit() {
-        const exit = this._scene.exit;
-        this._ctx.fillStyle = '#F549C8';
-        this._ctx.fillRect( exit.x * this._tileSize, exit.y * this._tileSize, this._tileSize, this._tileSize );
-    }
+	_drawExit() {
+		const exit = this._scene.exit;
+		this._ctx.fillStyle = '#F549C8';
+		this._ctx.fillRect( exit.x * this._tileSize, exit.y * this._tileSize, this._tileSize, this._tileSize );
+	}
 }
 

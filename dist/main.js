@@ -168,9 +168,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Game {
-    constructor(canvas, levels, levelsInfo = levels.map(() => 0 /* UNDONE */)) {
+    constructor(canvas, levels, levelsInfo = levels.map(() => 0 /* UNDONE */), imageManager) {
         this.levels = levels;
         this.levelsInfo = levelsInfo;
+        this.imageManager = imageManager;
         this.levelChangeEmitter = new _emitter__WEBPACK_IMPORTED_MODULE_3__["Emitter"]();
         this.endGameEmitter = new _emitter__WEBPACK_IMPORTED_MODULE_3__["Emitter"]();
         this.levelNum = -1;
@@ -180,7 +181,7 @@ class Game {
         if (!ctx) {
             throw new Error('Canvas is not supported');
         }
-        this.renderer = new _renderer__WEBPACK_IMPORTED_MODULE_2__["Renderer"](ctx, this.scene);
+        this.renderer = new _renderer__WEBPACK_IMPORTED_MODULE_2__["Renderer"](ctx, this.scene, imageManager);
     }
     start() {
         this.keyboardController.moveEmitter.subscribe(moveVector => {
@@ -255,6 +256,51 @@ class Game {
 
 /***/ }),
 
+/***/ "./src/imageManager.ts":
+/*!*****************************!*\
+  !*** ./src/imageManager.ts ***!
+  \*****************************/
+/*! exports provided: ImageManager */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ImageManager", function() { return ImageManager; });
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+class ImageManager {
+    constructor() {
+        this.images = new Map();
+    }
+    // This function can be optimized in the future, when more images will be required.
+    load(imageSources) {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const imageName in imageSources) {
+                this.images.set(imageName, yield loadImage(imageSources[imageName]));
+            }
+        });
+    }
+}
+function loadImage(src) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const image = new Image();
+        image.src = src;
+        return new Promise((resolve, reject) => {
+            image.onload = () => resolve(image);
+            image.onerror = reject;
+        });
+    });
+}
+
+
+/***/ }),
+
 /***/ "./src/index.ts":
 /*!**********************!*\
   !*** ./src/index.ts ***!
@@ -267,6 +313,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ "./src/game.ts");
 /* harmony import */ var _menu__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./menu */ "./src/menu.ts");
 /* harmony import */ var _levels__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./levels */ "./src/levels.ts");
+/* harmony import */ var _imageManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./imageManager */ "./src/imageManager.ts");
+
 
 
 
@@ -274,20 +322,22 @@ let progress;
 if (localStorage.getItem('levelInfo')) {
     progress = JSON.parse(localStorage.getItem('levelInfo'));
 }
-const game = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](document.getElementById('blocksBoard'), _levels__WEBPACK_IMPORTED_MODULE_2__["levels"], progress);
+const imageManager = new _imageManager__WEBPACK_IMPORTED_MODULE_3__["ImageManager"]();
+const game = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](document.getElementById('blocksBoard'), _levels__WEBPACK_IMPORTED_MODULE_2__["levels"], progress, imageManager);
 const menu = new _menu__WEBPACK_IMPORTED_MODULE_1__["Menu"](game);
-game.start();
+imageManager.load({
+    pig: './img/pig.png'
+})
+    .then(() => game.start());
 game.levelChangeEmitter.subscribe(() => {
     localStorage.setItem('levelInfo', JSON.stringify(game.levelsInfo));
 });
 game.endGameEmitter.subscribe(() => {
     const endScreen = document.getElementById('end-screen');
-	const restartButton = document.getElementById('restart-game');
-	const welcomeScreen = document.getElementById( 'welcome' );
+    const restartButton = document.getElementById('restart-game');
     endScreen.style.visibility = 'visible';
     restartButton.addEventListener('click', () => {
-		game.resetGame();
-		welcomeScreen.classList.remove( 'hidden' );
+        game.resetLevel();
         endScreen.style.visibility = 'hidden';
     });
 });
@@ -808,7 +858,8 @@ class RectangleBlock {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Renderer", function() { return Renderer; });
 class Renderer {
-    constructor(ctx, scene) {
+    constructor(ctx, scene, imageManager) {
+        this.imageManager = imageManager;
         this.animationFrame = 5;
         this._ctx = ctx;
         this._scene = scene;
@@ -862,15 +913,22 @@ class Renderer {
             colorNum = colorNum + colorAdd;
         }
     }
+    // draw player przed gra
     _drawPlayer() {
         const player = {
             x: this._scene.playerPosition.x - (5 - this.animationFrame) / 5 * this._scene.moveInfo.moveVector.x,
             y: this._scene.playerPosition.y - (5 - this.animationFrame) / 5 * this._scene.moveInfo.moveVector.y
         };
-        this._ctx.fillStyle = '#FFEE00';
-        this._ctx.beginPath();
-        this._ctx.arc(player.x * this._tileSize + this._tileSize / 2, player.y * this._tileSize + this._tileSize / 2, this._tileSize / 2, 0, 2 * Math.PI);
-        this._ctx.fill();
+        const pig = this.imageManager.images.get('pig');
+        this._ctx.drawImage(pig, player.x * this._tileSize, player.y * this._tileSize, this._tileSize, this._tileSize);
+        // this._ctx.fillStyle = '#FFEE00';
+        // this._ctx.beginPath();
+        // this._ctx.arc(
+        // 	player.x * this._tileSize + this._tileSize / 2,
+        // 	player.y * this._tileSize + this._tileSize / 2,
+        // 	this._tileSize / 2, 0, 2 * Math.PI
+        // );
+        // this._ctx.fill();
     }
     _drawExit() {
         const exit = this._scene.exit;

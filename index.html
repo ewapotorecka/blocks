@@ -5,11 +5,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Noto+Sans&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
 	<title>Blocks Game</title>
 	<style>
 		body {
 			margin: 0;
+			font-family: 'Indie Flower', cursive;
 		}
 
 		body::after {
@@ -41,7 +42,7 @@
 		#main {
 			display: flex;
 		}
-
+/* Fix - after resizing window, background does not load properly. */
 		#welcome {
 			width: 100vw;
 			height: 100vh;
@@ -57,7 +58,7 @@
 
 		#welcome-instructions {
 			position: absolute;
-			height: 50%;
+			height: fit-content;
 			width: 50%;
 			top: 25%;
 			left: 25%;
@@ -65,12 +66,11 @@
 			border: 1px solid black;
 			border-radius: 5px;
 			padding: 10px;
-			font-family: 'Lato', sans-serif;
 		}
 
 		#welcome-instructions button {
-			font-family: 'Noto Sans', sans-serif;
 			text-transform: uppercase;
+			font-family: 'Indie Flower', cursive;
 			margin: 10px;
 			width: 100px;
 			height: 30px;
@@ -85,8 +85,8 @@
 		#level-list-container button {
 			width: 100px;
 			text-align: center;
-			font-family: 'Noto Sans', sans-serif;
-			text-transform: capitalize;
+			font-family: 'Indie Flower', cursive;
+			text-transform: uppercase;
 			font-size: 18px;
 		}
 
@@ -95,7 +95,7 @@
 		}
 
 		#buttons-container button {
-			font-family: 'Noto Sans', sans-serif;
+			font-family: 'Indie Flower', cursive;
 			text-transform: uppercase;
 			margin: 10px;
 			width: 100px;
@@ -158,12 +158,12 @@
 			border: 1px solid black;
 			border-radius: 5px;
 			padding: 10px;
-			font-family: 'Lato', sans-serif;
+			font-family: 'Indie Flower', cursive;
 			font-weight: bold;
 		}
 
 		#end-screen button {
-			font-family: 'Noto Sans', sans-serif;
+			font-family: 'Indie Flower', cursive;
 			text-transform: uppercase;
 			margin: 10px;
 			width: 200px;
@@ -188,11 +188,14 @@
 	<div id="main">
 		<div id="welcome">
 			<div id="welcome-instructions">
-				<h2>WELCOME TO THE BLOCK GAME</h2>
-				<p>Your job is to move around blocks, so that you can get to the exit.</p>
+				<h2>WELCOME TO THE PINK PIGGY GAME</h2>
+				<p>You are the Brave Pink Pig!</p>
+				<img src="img/pig.png" width="100px" height="100px"/>
+				<p>Your job is to save your friends, who got trapped behind the fence.</p>
+				<p>Hurry up! You don't want your friends to end up on a plate.</p>
 				<p>You can push one block at a time.</p>
 				<p>Be careful - some blocks (with the same color) are connected.</p>
-				<button id="start">START</button>
+				<button id="start">Start</button>
 			</div>
 		</div>
 		<div id="buttons-container">
