@@ -75,29 +75,22 @@ export class Renderer {
 			colorNum = colorNum + colorAdd;
 		}
 	}
-// draw player przed gra
+
 	_drawPlayer() {
 		const player = {
 			x: this._scene.playerPosition.x - ( 5 - this.animationFrame ) / 5 * this._scene.moveInfo.moveVector.x,
 			y: this._scene.playerPosition.y - ( 5 - this.animationFrame ) / 5 * this._scene.moveInfo.moveVector.y
 		};
 		const pig = this.imageManager.images.get( 'pig' )!;
-		
+
 		this._ctx.drawImage( pig, player.x * this._tileSize, player.y * this._tileSize, this._tileSize, this._tileSize );
-		// this._ctx.fillStyle = '#FFEE00';
-		// this._ctx.beginPath();
-		// this._ctx.arc(
-		// 	player.x * this._tileSize + this._tileSize / 2,
-		// 	player.y * this._tileSize + this._tileSize / 2,
-		// 	this._tileSize / 2, 0, 2 * Math.PI
-		// );
-		// this._ctx.fill();
 	}
 
 	_drawExit() {
 		const exit = this._scene.exit;
-		this._ctx.fillStyle = '#F549C8';
-		this._ctx.fillRect( exit.x * this._tileSize, exit.y * this._tileSize, this._tileSize, this._tileSize );
+		const broccoli = this.imageManager.images.get( 'broccoli' )!;
+
+		this._ctx.drawImage( broccoli, exit.x * this._tileSize, exit.y * this._tileSize, this._tileSize, this._tileSize );
 	}
 }
 

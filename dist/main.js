@@ -326,7 +326,8 @@ const imageManager = new _imageManager__WEBPACK_IMPORTED_MODULE_3__["ImageManage
 const game = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](document.getElementById('blocksBoard'), _levels__WEBPACK_IMPORTED_MODULE_2__["levels"], progress, imageManager);
 const menu = new _menu__WEBPACK_IMPORTED_MODULE_1__["Menu"](game);
 imageManager.load({
-    pig: './img/pig.png'
+    pig: './img/pig.png',
+    broccoli: './img/broccoli.png'
 })
     .then(() => game.start());
 game.levelChangeEmitter.subscribe(() => {
@@ -913,7 +914,6 @@ class Renderer {
             colorNum = colorNum + colorAdd;
         }
     }
-    // draw player przed gra
     _drawPlayer() {
         const player = {
             x: this._scene.playerPosition.x - (5 - this.animationFrame) / 5 * this._scene.moveInfo.moveVector.x,
@@ -921,19 +921,11 @@ class Renderer {
         };
         const pig = this.imageManager.images.get('pig');
         this._ctx.drawImage(pig, player.x * this._tileSize, player.y * this._tileSize, this._tileSize, this._tileSize);
-        // this._ctx.fillStyle = '#FFEE00';
-        // this._ctx.beginPath();
-        // this._ctx.arc(
-        // 	player.x * this._tileSize + this._tileSize / 2,
-        // 	player.y * this._tileSize + this._tileSize / 2,
-        // 	this._tileSize / 2, 0, 2 * Math.PI
-        // );
-        // this._ctx.fill();
     }
     _drawExit() {
         const exit = this._scene.exit;
-        this._ctx.fillStyle = '#F549C8';
-        this._ctx.fillRect(exit.x * this._tileSize, exit.y * this._tileSize, this._tileSize, this._tileSize);
+        const broccoli = this.imageManager.images.get('broccoli');
+        this._ctx.drawImage(broccoli, exit.x * this._tileSize, exit.y * this._tileSize, this._tileSize, this._tileSize);
     }
 }
 

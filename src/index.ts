@@ -14,7 +14,8 @@ const game = new Game( document.getElementById( 'blocksBoard' ) as HTMLCanvasEle
 const menu = new Menu( game );
 
 imageManager.load( {
-	pig: './img/pig.png'
+	pig: './img/pig.png',
+	broccoli: './img/broccoli.png'
 } )
 	.then( () => game.start() );
 
@@ -28,7 +29,7 @@ game.endGameEmitter.subscribe( () => {
 
 	endScreen.style.visibility = 'visible';
 	restartButton.addEventListener( 'click', () => {
-		game.resetLevel();
+		game.resetGame();
 		endScreen.style.visibility = 'hidden';
 	} );
 } );
