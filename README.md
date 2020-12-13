@@ -2,7 +2,9 @@
 
 ![](blocksmin.png)
 
-A simple game, where you have to push blocks to clear the way to the exit.
+Currently available only for desktop.
+
+A simple game, where your objective is to find the way to the tasty veggies. Move using arrows. Hungry Pig can push a block to clear the way.
 
 Demo: https://ewapotorecka.github.io/blocks/
 
